@@ -53,10 +53,6 @@ add_library(
         src/main/cpp/cipher/ciphertool.c
         src/main/cpp/cipher/ciphertool.h
 
-        # multidex
-        src/main/cpp/multidex/multidex.cpp
-        src/main/cpp/multidex/multidex.h
-
         # jnionload
         src/main/cpp/jnionload/jnionload.c
         src/main/cpp/jnionload/jnionload.h)
