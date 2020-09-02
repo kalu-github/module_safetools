@@ -1,0 +1,79 @@
+apply plugin: rootProject.ext.plugin.com_android_library
+
+android {
+    compileSdkVersion rootProject.ext.android.compileSdkVersion
+    buildToolsVersion rootProject.ext.android.buildToolsVersion
+
+    defaultConfig {
+
+        minSdkVersion rootProject.ext.android.minSdkVersion
+        targetSdkVersion rootProject.ext.android.targetSdkVersion
+        versionCode rootProject.ext.android.versionCode
+        versionName rootProject.ext.android.versionName
+        vectorDrawables.useSupportLibrary = true
+
+        ndk {
+            abiFilters rootProject.ext.plugin.armeabi
+        }
+
+        externalNativeBuild {
+            cmake {
+                //  arguments '-DANDROID_STL=gnustl_static'
+                cppFlags "-std=c++14", "-fno-exceptions", "-O2"
+                // cppFlags "-std=c++14", "-frtti -fexceptions", "-O2"
+                // cppFlags "-frtti -fexceptions"
+                abiFilters rootProject.ext.plugin.armeabi
+            }
+        }
+
+        //添加此行
+        flavorDimensions "default"
+    }
+
+    buildTypes {
+        release {
+            consumerProguardFiles 'proguard-rules.pro'
+        }
+        debug {
+        }
+    }
+
+    externalNativeBuild {
+        cmake {
+            path "CMakeLists.txt"
+        }
+    }
+
+    compileOptions {
+        sourceCompatibility JavaVersion.VERSION_1_8
+        targetCompatibility JavaVersion.VERSION_1_8
+    }
+
+    lintOptions {
+        checkReleaseBuilds false
+        abortOnError false
+    }
+
+    sourceSets.main {
+        jni.srcDirs = []
+    }
+
+//    sourceSets {
+//        main {
+//            jniLibs.srcDirs 'src/main/cpp/libs'
+//        }
+//    }
+//
+//    packagingOptions {
+//        pickFirst "**/libcatic-jpeg.so"
+//    }
+}
+
+dependencies {
+    implementation fileTree(dir: 'libs', include: ['*.jar', '*.aar'])
+
+    implementation rootProject.ext.dependencies.support_activity
+//    implementation rootProject.ext.dependencies.support_fragment
+//    implementation rootProject.ext.dependencies.support_annotation
+//    implementation rootProject.ext.dependencies.support_appcompat
+}

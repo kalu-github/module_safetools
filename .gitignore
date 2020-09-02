@@ -1,0 +1,7 @@
+# Project exclude paths
+/.gradle/
+/app/build/
+/app/build/intermediates/javac/debug/classes/
+/lib_encryption/.cxx/
+/lib_encryption/build/
+/lib_encryption/build/intermediates/javac/debug/classes/
