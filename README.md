@@ -1,2 +1,2 @@
-# cmake_encryption_v1.0
-安全混淆
+签名校验：
+com.kalu.encryption
