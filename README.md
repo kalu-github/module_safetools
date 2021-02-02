@@ -37,29 +37,78 @@ public static native String aesEncodeMult(String str, boolean checkRoot, boolean
 
 #
 #### 解密字符
+```
+/**
+ * 解密字符
+ *
+ * @param str 待解密信息
+ * @return 解密信息
+ */
+@Keep
+public static native String aesDecode(String str);
 
-![image](https://github.com/153437803/cmake_tools/blob/master/image20210202114038.png )
-![image](https://github.com/153437803/cmake_tools/blob/master/image20210202114106.png )
+/**
+ * 解密字符
+ *
+ * @param str
+ * @param str            待解密信息
+ * @param checkRoot      是否检测机器是否root
+ * @param checkEmulator  是否检测模拟器
+ * @param checkXposed    是否检测Xposed
+ * @param checkSignature 是否检测app签名信息
+ * @return 解密信息
+ */
+@Keep
+public static native String aesDecodeMult(String str, boolean checkRoot, boolean checkEmulator, boolean checkXposed, boolean checkSignature);
+```
 
 #
 #### 检测app签名信息
-
-![image](https://github.com/153437803/cmake_tools/blob/master/image20210202114126.png )
+```
+/**
+ * 检测签名信息师傅被纂改
+ *
+ * @return true: 通过, fasle: 未通过
+ */
+@Keep
+public static native boolean checkSignature();
+```
 
 #
 #### 检测机器是否root
-
-![image](https://github.com/153437803/cmake_tools/blob/master/image20210202114139.png )
+```
+/**
+ * 是否存在Root标记
+ *
+ * @return true: 通过, fasle: 未通过
+ */
+@Keep
+public static native boolean checkRoot();
+```
 
 #
 #### 检测模拟器
-
-![image](https://github.com/153437803/cmake_tools/blob/master/image20210202114150.png )
+```
+/**
+ * 是否存在模拟器
+ *
+ * @return true: 通过, fasle: 未通过
+ */
+@Keep
+public static native boolean checkEmulator();
+```
 
 #
 #### 检测Xposed
-
-![image](https://github.com/153437803/cmake_tools/blob/master/image20210202114205.png )
+```
+/**
+ * 是否存在 xposed
+ *
+ * @return true: 通过, fasle: 未通过
+ */
+@Keep
+public static native boolean checkXposed();
+```
 
 #
 #### todo list
