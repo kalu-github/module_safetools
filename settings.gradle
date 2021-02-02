@@ -1,2 +1,2 @@
 include ':app'
-include ':lib_encryption'
+include ':lib_jnitools'

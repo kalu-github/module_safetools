@@ -2,49 +2,12 @@ buildscript {
 
     // 编译: 2020-01-03
     ext.support_gradle_version = '4.1.2'
-    ext.support_aspectjx_version = "2.0.10" // 不要改动
-    ext.support_andresguard_version = "1.2.18"// 不要改动
 
-    // https://developer.android.google.cn/jetpack/androidx/versions
     // 核心: 2020-01-03
     ext.support_activity_version = '1.1.0'
     ext.support_fragment_version = '1.2.5'
     ext.support_annotation_version = "1.1.0"
     ext.support_appcompat_version = "1.1.0"
-
-    // https://developer.android.google.cn/jetpack/androidx/versions
-    // 功能: 2020-01-03
-    ext.support_recycler_version = '1.2.0-alpha04'
-    ext.support_cardview_version = "1.0.0"
-    ext.support_percentlayout_version = "1.0.0"
-    ext.support_viewpager2_version = "1.0.0"
-    ext.support_swiperefreshlayout_version = "1.0.0"
-    ext.support_localbroadcastmanager_version = "1.0.0"
-    ext.support_exifinterface_version = "1.0.0"
-    ext.support_transition_version = "1.0.0"
-    ext.support_multidex_version = "2.0.1"
-    ext.support_preference_version = '1.1.1'
-    ext.support_material_version = '1.1.0'
-    ext.support_coordinatorlayout_version = "1.1.0"
-
-    // 三方: 2020-01-03
-    ext.support_aspectjrt_version = "1.9.5" // 不要改动
-    ext.support_gson_version = '2.8.5' // 不要改动, 2.8.6编译错误
-    ext.support_glide_version = '4.11.0'
-    ext.support_autoservice_version = "1.0-rc4"
-    ext.support_leakcanary_version = "1.6.3"
-    ext.support_rxandroid_version = "3.0.0"
-    ext.support_rxjava_version = "3.0.3"
-    ext.support_retrofit_version = '2.9.0'
-    ext.support_okhttp_version = "3.14.9"
-    ext.support_okio_version = "1.17.5"
-    ext.support_autodispose_version = "2.0.0"
-
-    // umeng
-    ext.support_umeng_push_version = "6.0.1"
-    ext.support_umeng_common_version = "2.1.8"
-    ext.support_umeng_utdid_version = "1.1.5.3"
-    ext.support_umeng_analytics_version = "8.1.6"
 
     repositories {
         maven { url 'http://maven.aliyun.com/nexus/content/groups/public' }
@@ -56,8 +19,6 @@ buildscript {
 
     dependencies {
         classpath "com.android.tools.build:gradle:${support_gradle_version}"
-        classpath "com.tencent.mm:AndResGuard-gradle-plugin:$support_andresguard_version"
-        classpath "com.hujiang.aspectjx:gradle-android-plugin-aspectjx:$support_aspectjx_version"
     }
 }
 
@@ -69,10 +30,6 @@ allprojects {
         maven { url 'https://dl.bintray.com/umsdk/release' }
         jcenter()
         google()
-
-        flatDir {
-            dirs '../lib_file/libs', "../lib_core/libs", "../app/libs"
-        }
     }
 }
 
@@ -92,166 +49,21 @@ ext {
     // 版本
     android = [
             applicationId    : "com.kalu.encryption",
-//            compileSdkVersion: 29,
-//            buildToolsVersion: "29.0.2",
-//            minSdkVersion    : 23,
-//            targetSdkVersion : 29, // 28之后强制使用https, 否则报错, 或者networkSecurityConfig
             compileSdkVersion: 28,
             buildToolsVersion: "28.0.3",
             minSdkVersion    : 23, // 6.0+
             targetSdkVersion : 28, // 28之后强制使用https, 否则报错, 或者networkSecurityConfig
             versionCode      : 11,
             versionName      : "2.0.0"
-//            versionCode      : getVersionCode(),
-//            versionName      : getVersionName(),
     ]
 
     // 依赖
     dependencies = [
 
             // 核心: 2020-01-03
-            "support_activity"             : "androidx.activity:activity:$support_activity_version",
-            "support_fragment"             : "androidx.fragment:fragment:$support_fragment_version",
-            "support_annotation"           : "androidx.annotation:annotation:$support_annotation_version",
-            "support_appcompat"            : "androidx.appcompat:appcompat:$support_appcompat_version",
-
-            // 功能: 2020-01-03
-            "support_viewpager2"           : "androidx.viewpager2:viewpager2:$support_viewpager2_version",
-            "support_cardview"             : "androidx.cardview:cardview:$support_cardview_version",
-            "support_swiperefreshlayout"   : "androidx.swiperefreshlayout:swiperefreshlayout:$support_swiperefreshlayout_version",
-            "support_localbroadcastmanager": "androidx.localbroadcastmanager:localbroadcastmanager:$support_localbroadcastmanager_version",
-            "support_material"             : "com.google.android.material:material:$support_material_version",
-            "support_recyclerview"         : "androidx.recyclerview:recyclerview:$support_recycler_version",
-            "support_multidex"             : "androidx.multidex:multidex:$support_multidex_version",
-            "support_preference"           : "androidx.preference:preference:$support_preference_version",
-            "support_exifinterface"        : "androidx.exifinterface:exifinterface:$support_exifinterface_version",
-            "support_transition"           : "androidx.transition:transition:$support_transition_version",
-            "support_percentlayout"        : "androidx.percentlayout:percentlayout:$support_percentlayout_version",
-            "support_coordinatorlayout"    : "androidx.coordinatorlayout:coordinatorlayout:$support_coordinatorlayout_version",
-
-
-            // 三方: 2020-01-03
-            "retrofit_core"                : "com.squareup.retrofit2:retrofit:$support_retrofit_version",
-            "retrofit_converter"           : "com.squareup.retrofit2:converter-gson:$support_retrofit_version",
-            "rxandroid"                    : "io.reactivex.rxjava3:rxandroid:$support_rxandroid_version",
-            "rxjava"                       : "io.reactivex.rxjava3:rxjava:$support_rxjava_version",
-            "okio"                         : "com.squareup.okio:okio:$support_okio_version",
-            "okhttp"                       : "com.squareup.okhttp3:okhttp:$support_okhttp_version",
-            "autodispose"                  : "com.uber.autodispose2:autodispose-androidx-lifecycle:$support_autodispose_version",
-
-            "autoservice"                  : "com.google.auto.service:auto-service:$support_autoservice_version",
-            "gson"                         : "com.google.code.gson:gson:$support_gson_version",
-            "glide"                        : "com.github.bumptech.glide:glide:$support_glide_version",
-            "fastclick"                    : "org.aspectj:aspectjrt:$support_aspectjrt_version",
-            "sevenzip"                     : "com.tencent.mm:SevenZip:$support_andresguard_version",
-
-            "leakcanary"                   : "com.squareup.leakcanary:leakcanary-android:$support_leakcanary_version",
-            "leakcanary_no_op"             : "com.squareup.leakcanary:leakcanary-android-no-op:$support_leakcanary_version",
-
-            // umeng
-            "umeng_common"                 : "com.umeng.umsdk:common:$support_umeng_common_version",
-            "umeng_push"                   : "com.umeng.umsdk:push:$support_umeng_push_version",
-            "umeng_utdid"                  : "com.umeng.umsdk:utdid:$support_umeng_utdid_version",
-            "umeng_analytics"              : "com.umeng.umsdk:analytics:$support_umeng_analytics_version",
+            "support_activity"  : "androidx.activity:activity:$support_activity_version",
+            "support_fragment"  : "androidx.fragment:fragment:$support_fragment_version",
+            "support_annotation": "androidx.annotation:annotation:$support_annotation_version",
+            "support_appcompat" : "androidx.appcompat:appcompat:$support_appcompat_version",
     ]
 }
-
-task clean(type: Delete) {
-    delete rootProject.buildDir
-}
-
-tasks.withType(JavaCompile) {
-    options.encoding = "UTF-8"
-}
-
-tasks.withType(Javadoc) {
-    options.addStringOption('Xdoclint:none', '-quiet')
-    options.addStringOption('encoding', 'UTF-8')
-    source = android.sourceSets.main.java.srcDirs
-    classpath += project.files(android.getBootClasspath().join(File.pathSeparator))
-}
-
-////////////////////////////////////////////////////////////////////////////////////////////////////
-//
-//def getVersionCode() {
-//    def versionFile = file('versioncode.properties')
-//    if (versionFile.canRead()) {
-//
-//        Properties versionProps = new Properties()
-//        versionProps.load(new FileInputStream(versionFile))
-//
-//        def versionCode = versionProps['VERSION_CODE'].toInteger()
-//        println 'get versioncode = ' + versionCode
-//
-//        def runTasks = gradle.startParameter.taskNames
-//
-//        // 资源混淆打包(net)
-//        if ('resguardNetRelease' in runTasks) {
-//
-//            versionProps['VERSION_CODE'] = (++versionCode).toString()
-//            println 'save versioncode = ' + versionProps['VERSION_CODE']
-//
-//            versionProps.store(versionFile.newWriter(), null)
-//        }
-//        // 工具正式打包(net)
-//        else if (':app:assembleNetRelease' in runTasks) {
-//
-//            versionProps['VERSION_CODE'] = (++versionCode).toString()
-//            println 'save versioncode = ' + versionProps['VERSION_CODE']
-//
-//            versionProps.store(versionFile.newWriter(), null)
-//        }
-//        return versionCode
-//    } else {
-//        throw new GradleException("Could not find versioncode.properties!")
-//    }
-//}
-//
-//def getVersionName() {
-//
-//    def versionFile = file('versionname.properties')
-//    if (versionFile.canRead()) {
-//
-//        Properties versionProps = new Properties()
-//        versionProps.load(new FileInputStream(versionFile))
-//
-//        def versionName1 = versionProps['VERSION_NAME1'].toInteger()
-//        println 'get versionname1 = ' + versionName1
-//
-//        def versionName2 = versionProps['VERSION_NAME2'].toInteger()
-//        println 'get versionname2 = ' + versionName2
-//
-//        def versionName3 = versionProps['VERSION_NAME3'].toInteger()
-//        println 'get versionname3 = ' + versionName3
-//
-//        def runTasks = gradle.startParameter.taskNames
-//
-//        // 资源混淆打包(net)
-//        if ('resguardNetRelease' in runTasks) {
-//
-//            versionProps['VERSION_NAME3'] = (++versionName3).toString()
-//            println 'save versionname3 = ' + versionProps['VERSION_NAME3']
-//
-//            versionProps['VERSION_NAME2'] = (++versionName2).toString()
-//            println 'save versionname2 = ' + versionProps['VERSION_NAME2']
-//
-//            versionProps.store(versionFile.newWriter(), null)
-//        }
-//        // 工具正式打包(net)
-//        else if (':app:assembleNetRelease' in runTasks) {
-//
-//            versionProps['VERSION_NAME3'] = (++versionName3).toString()
-//            println 'save versionname3 = ' + versionProps['VERSION_NAME3']
-//
-//            versionProps['VERSION_NAME2'] = (++versionName2).toString()
-//            println 'save versionname2 = ' + versionProps['VERSION_NAME2']
-//
-//            versionProps.store(versionFile.newWriter(), null)
-//        }
-//        return versionName1 + "." + versionName2 + "." + versionName3 + "." + new Date().format("yyyyMMdd")
-//    } else {
-//        throw new GradleException("Could not find versionname.properties!")
-//    }
-//}
-
-////////////////////////////////////////////////////////////////////////////////////////////////////

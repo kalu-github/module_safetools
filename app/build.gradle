@@ -1,12 +1,4 @@
 apply plugin: rootProject.ext.plugin.com_android_application
-apply plugin: rootProject.ext.plugin.andresguard
-apply plugin: rootProject.ext.plugin.fastclick
-
-aspectjx {
-    //include 'cn.appblog.common.utils.click.SingleClickAspect'
-    // fix Didn't find class "com.umeng.message.provider.MessageProvider" on path: DexPathList
-    exclude 'com.umeng.message'
-}
 
 android {
 
@@ -35,28 +27,9 @@ android {
             variant.outputs.all {
                 variant.productFlavors.each { flavor ->
                     def date = new Date().format("yyyyMMddHHmmss", TimeZone.getTimeZone("GMT+08"))
-                    outputFileName = "cajinfu_" + flavor.name + "_v" + defaultConfig.versionName + "_" + date + ".apk"
+                    outputFileName = "jnitools_" + flavor.name + "_v" + defaultConfig.versionName + "_" + date + ".apk"
                 }
             }
-    }
-
-    signingConfigs {
-        release {
-            storeFile file("debug.jks")
-            storePassword "123456"
-            keyAlias "debug"
-            keyPassword "123456"
-            v1SigningEnabled true
-            v2SigningEnabled true
-        }
-        debug {
-            storeFile file("debug.jks")
-            storePassword "123456"
-            keyAlias "debug"
-            keyPassword "123456"
-            v1SigningEnabled true
-            v2SigningEnabled true
-        }
     }
 
     buildTypes {
@@ -66,8 +39,6 @@ android {
             zipAlignEnabled true
             shrinkResources true
             multiDexEnabled true
-            signingConfig signingConfigs.release
-            proguardFiles getDefaultProguardFile('proguard-android.txt'), 'proguard-rules.pro'
         }
         debug {
             useProguard false
@@ -76,7 +47,6 @@ android {
             shrinkResources false
             multiDexEnabled true
             signingConfig signingConfigs.debug
-            ext.alwaysUpdateBuildId = false
         }
     }
 
@@ -93,100 +63,26 @@ android {
     sourceSets.main {
         jni.srcDirs = []
     }
+}
 
-//    repositories {
-//        flatDir {
-//            dirs 'libs'
-//        }
-//    }
+repositories {
+    flatDir {
+        dirs 'libs'
+    }
 }
 
 dependencies {
     implementation fileTree(include: ['*.jar'], dir: 'libs')
 
     // 模块依赖
-    implementation project(':lib_encryption')
+    implementation(name: 'lib_jnitools-release', ext: 'aar')
+
+    // 模块依赖
+    // implementation project(':lib_jnitools')
 
     // 三方依赖
     implementation rootProject.ext.dependencies.support_activity
     implementation rootProject.ext.dependencies.support_fragment
     implementation rootProject.ext.dependencies.support_annotation
     implementation rootProject.ext.dependencies.support_appcompat
-    implementation rootProject.ext.dependencies.support_coordinatorlayout
-
-    implementation rootProject.ext.dependencies.rxandroid
-    implementation rootProject.ext.dependencies.rxjava
-    implementation rootProject.ext.dependencies.retrofit_core
-    implementation rootProject.ext.dependencies.okio
-    implementation rootProject.ext.dependencies.okhttp
-    implementation rootProject.ext.dependencies.autodispose
-
-    implementation rootProject.ext.dependencies.gson
-    implementation rootProject.ext.dependencies.support_material
-    implementation rootProject.ext.dependencies.support_recyclerview
-    implementation rootProject.ext.dependencies.support_percentlayout
-    implementation rootProject.ext.dependencies.support_swiperefreshlayout
-//    debugImplementation rootProject.ext.dependencies.leakcanary
-//    debugImplementation rootProject.ext.dependencies.leakcanary_no_op
-//    releaseImplementation rootProject.ext.dependencies.leakcanary_no_op
-}
-
-aspectjx {
-    exclude 'com.alipay'
-}
-
-////////////////////////////////////////////////////////////////////////////////////////////////////
-
-andResGuard {
-    // mappingFile = file("./resource_mapping.txt")
-    mappingFile = null
-    use7zip = true
-    useSign = true
-    // 打开这个开关，会keep住所有资源的原始路径，只混淆资源的名字
-    keepRoot = false
-    // 设置这个值，会把arsc name列混淆成相同的名字，减少string常量池的大小
-    fixedResName = "arg"
-    // 打开这个开关会合并所有哈希值相同的资源，但请不要过度依赖这个功能去除去冗余资源
-    mergeDuplicatedRes = true
-    whiteList = [
-            // for your icon
-            "R.drawable.icon",
-            // for fabric
-            "R.string.com.crashlytics.*",
-            // for google-services
-            "R.string.google_app_id",
-            "R.string.gcm_defaultSenderId",
-            "R.string.default_web_client_id",
-            "R.string.ga_trackingId",
-            "R.string.firebase_database_url",
-            "R.string.google_api_key",
-            "R.string.google_crash_reporting_api_key",
-
-            // gif
-            "R.drawable.ic_core_loding",
-            "R.drawable.ic_core_loding.gif",
-            "R.drawable.ic_core_refresh",
-            "R.drawable.ic_core_refresh.gif",
-    ]
-    compressFilePattern = [
-            "*.png",
-            "*.jpg",
-            "*.jpeg",
-            "*.gif",
-    ]
-    sevenzip {
-        artifact = rootProject.ext.dependencies.sevenzip
-        //path = "/usr/local/bin/7za"
-    }
-
-    /**
-     * 可选： 如果不设置则会默认覆盖assemble输出的apk
-     **/
-    // finalApkBackupPath = "${project.rootDir}/final.apk"
-
-    /**
-     * 可选: 指定v1签名时生成jar文件的摘要算法
-     * 默认值为“SHA-1”
-     **/
-    // digestalg = "SHA-256"
 }

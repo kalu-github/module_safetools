@@ -6,7 +6,7 @@ import androidx.annotation.Keep;
 public final class ToolUtil {
 
     static {
-        System.loadLibrary("kalu-encryption");
+        System.loadLibrary("tools");
     }
 
     /**
