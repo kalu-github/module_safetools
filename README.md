@@ -4,7 +4,7 @@
 ![image](https://github.com/153437803/cmake_jnitools/blob/master/image20210202113900.gif )
 
 #
-#### jni签名校验
+#### 配置说明
 ```
 1. jni签名信息
 - com.kalu.encryption
