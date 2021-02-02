@@ -56,7 +56,6 @@ public static native String aesDecode(String str);
 /**
  * 解密字符
  *
- * @param str
  * @param str            待解密信息
  * @param checkRoot      是否检测机器是否root
  * @param checkEmulator  是否检测模拟器
