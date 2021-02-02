@@ -11,9 +11,29 @@ com.kalu.encryption
 
 #
 #### 加密字符
+```
+/**
+ * 加密字符
+ *
+ * @param str 待加密信息
+ * @return 加密后信息
+ */
+@Keep
+public static native String aesEncode(String str);
 
-![image](https://github.com/153437803/cmake_tools/blob/master/image20210202113905.png )
-![image](https://github.com/153437803/cmake_tools/blob/master/image20210202113926.png )
+/**
+ * 加密字符
+ *
+ * @param str            待加密信息
+ * @param checkRoot      是否检测机器是否root
+ * @param checkEmulator  是否检测模拟器
+ * @param checkXposed    是否检测Xposed
+ * @param checkSignature 是否检测app签名信息
+ * @return 加密后信息
+ */
+@Keep
+public static native String aesEncodeMult(String str, boolean checkRoot, boolean checkEmulator, boolean checkXposed, boolean checkSignature);
+```
 
 #
 #### 解密字符
