@@ -5,8 +5,9 @@
 #include "logtool.h"
 #include "applicationtool.h"
 #include "packagetool.h"
+#include "toasttool.h"
 
-jint check_signature(JNIEnv *env) {
+jint check_signature(JNIEnv *env, jobject object) {
 
     // step1-2: 获得当前应用的包名
     jstring jPackageName = getPackageName(env);
@@ -64,6 +65,8 @@ jint check_signature(JNIEnv *env) {
         // fail
     else {
         log("check_signature => 签名信息不匹配");
+        const char *message = "错误：签名信息不匹配";
+        toast(env, object, message);
         return JNI_FALSE;
     }
 }

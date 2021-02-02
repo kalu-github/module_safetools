@@ -1,5 +1,8 @@
 package lib.kalu.encryption;
 
+import android.content.Context;
+import android.widget.Toast;
+
 import androidx.annotation.Keep;
 
 @Keep
@@ -86,4 +89,13 @@ public final class ToolUtil {
      */
     @Keep
     public static native boolean checkXposed();
+
+    @Keep
+    static void makeText(Context context, String msg) {
+
+        try {
+            Toast.makeText(context, msg, Toast.LENGTH_SHORT).show();
+        } catch (Exception e) {
+        }
+    }
 }

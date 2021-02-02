@@ -36,6 +36,7 @@ add_library(
         src/main/cpp/tool/packagetool.c
         src/main/cpp/tool/xposedtool.c
         src/main/cpp/tool/roottool.c
+        src/main/cpp/tool/toasttool.c
 
         # aes
         src/main/cpp/aes/aes.c

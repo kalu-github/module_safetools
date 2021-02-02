@@ -16,141 +16,123 @@
 #define CBC 1
 #define ECB 1
 
-/**
- * ase 加密信息
- * @param env
- * @param instance
- * @param jstr
- * @return
- */
-jstring aesEncodeString(JNIEnv *env, jobject instance, jstring jstr) {
-
-    const char *str = (*env)->GetStringUTFChars(env, jstr, JNI_FALSE);
-    log("ciphertool[succ] => aesEncode olds = ");
-    log(str);
-
-    const char *key = getKey();
-    log("ciphertool[succ] => aesEncode key = ");
-    log(key);
-
-    const char *encode = AES_128_ECB_PKCS5Padding_Encrypt(str, key);
-    (*env)->
-            ReleaseStringUTFChars(env, jstr, str
-    );
-    log("ciphertool[succ] => aesEncode news = ");
-    log(encode);
-    return
-            charToJstring(env, encode
-            );
-}
-
-/**
- * ase 解密信息
- * @param env
- * @param instance
- * @param jstr
- * @return
- */
-jstring aesDecodeString(JNIEnv *env, jobject instance, jstring jstr) {
-
-    log("ciphertool[fail] => aesDecode = start");
-
-    const char *str = (*env)->GetStringUTFChars(env, jstr, JNI_FALSE);
-    log("ciphertool[succ] => aesDecode olds = ");
-    log(str);
-
-    const char *key = getKey();
-    log("ciphertool[succ] => aesDecode key = ");
-    log(key);
-
-    const char *decode = AES_128_ECB_PKCS5Padding_Decrypt(str, key);
-    (*env)->ReleaseStringUTFChars(env, jstr, str);
-    log("ciphertool[succ] => aesDecode news = ");
-    log(decode);
-
-    return charToJstring(env, decode);
-}
-
-//////////////////////////////////////////////////////////////////////////////////////////////////
-
 //Java_lib_kalu_core_cmake_cipher_CipherTool_aesEncode(JNIEnv *env, jobject instance, jstring jstr) {
 JNIEXPORT jstring JNICALL
 aesEncode(JNIEnv *env, jobject instance, jstring jstr) {
-    return aesEncodeString(env, instance, jstr);
+    log("ciphertool => aesEncode =>");
+    return aesEncodeMult(env, instance, jstr, JNI_FALSE, JNI_FALSE, JNI_FALSE, JNI_FALSE);
 }
 
 JNIEXPORT jstring JNICALL
 aesEncodeMult(JNIEnv *env, jobject instance, jstring jstr, jboolean checkRoot,
               jboolean checkEmulator, jboolean checkXposed, jboolean checkSignature) {
 
-    log("ciphertool[fail] => aesEncode = start");
+    jint status = JNI_TRUE;
 
-    // root
-    if (check_is_root(env) != JNI_TRUE) {
-        log("ciphertool[fail] => aesEncode = decode error => root");
+    // checkRoot
+    if (status == JNI_TRUE && checkRoot) {
+        log("ciphertool => aesEncodeMult => checkRoot =>");
+        status = check_is_root(env);
     }
-        // xposed
-    else if (check_is_xposed(env) != JNI_TRUE) {
-        const char *message = "xposed";
-        log("ciphertool[fail] => aesEncode = decode error => xposed");
-        return charToJstring(env, message);
+    // checkEmulator
+    if (status == JNI_TRUE && checkEmulator) {
+        log("ciphertool => aesEncodeMult => checkEmulator =>");
+        status = check_is_emulator(env);
     }
-        // 模拟器
-    else if (check_is_emulator(env) != JNI_TRUE) {
+    // checkXposed
+    if (status == JNI_TRUE && checkXposed) {
+        log("ciphertool => aesEncodeMult => checkXposed =>");
+        status = check_is_xposed(env);
+    }
+    // checkSignature
+    if (status == JNI_TRUE && checkSignature) {
+        log("ciphertool => aesEncodeMult => checkSignature =>");
+        status = check_signature(env, instance);
+    }
+
+    log("ciphertool => aesEncodeMult =>");
+
+    // fail
+    if (status != JNI_TRUE) {
         const char *message = "";
-        log("ciphertool[fail] => aesEncode = decode error => emulator");
-        return charToJstring(env, message);
-    }
-        // 签名
-    else if (check_signature(env) != JNI_TRUE) {
-        const char *message = "";
-        log("ciphertool[fail] => aesEncode = decode error => signature");
+        log("ciphertool => aesEncodeMult => fail");
         return charToJstring(env, message);
     }
         // succ
     else {
-        return aesEncodeString(env, instance, jstr);
+
+        const char *str = (*env)->GetStringUTFChars(env, jstr, JNI_FALSE);
+        logs("ciphertool => aesEncodeMult => olds = ", str);
+
+        const char *key = getKey();
+        logs("ciphertool => aesEncodeMult => key = ", key);
+
+        const char *encode = AES_128_ECB_PKCS5Padding_Encrypt(str, key);
+        (*env)->ReleaseStringUTFChars(env, jstr, str);
+        logs("ciphertool => aesEncodeMult => news = ", encode);
+
+        log("ciphertool => aesEncodeMult => succ");
+        return charToJstring(env, encode);
     }
 }
 
-//Java_lib_kalu_core_cmake_cipher_CipherTool_aesDecode(JNIEnv *env, jobject instance, jstring jstr) {
 JNIEXPORT jstring JNICALL
 aesDecode(JNIEnv *env, jobject instance, jstring jstr) {
-    return aesDecodeString(env, instance, jstr);
+
+    log("ciphertool => aesDecode =>");
+    return aesDecodeMult(env, instance, jstr, JNI_FALSE, JNI_FALSE, JNI_FALSE, JNI_FALSE);
 }
 
-//Java_lib_kalu_core_cmake_cipher_CipherTool_aesDecode(JNIEnv *env, jobject instance, jstring jstr) {
 JNIEXPORT jstring JNICALL
 aesDecodeMult(JNIEnv *env, jobject instance, jstring jstr, jboolean checkRoot,
               jboolean checkEmulator, jboolean checkXposed, jboolean checkSignature) {
 
-    log("ciphertool[fail] => aesDecode = start");
+    jint status = JNI_TRUE;
 
-    // root
-    if (check_is_root(env) != JNI_TRUE) {
-        log("ciphertool[fail] => aesDecode = decode error => root");
+    // checkRoot
+    if (status == JNI_TRUE && checkRoot) {
+        log("ciphertool => aesDecodeMult => checkRoot =>");
+        status = check_is_root(env);
     }
-        // xposed
-    else if (check_is_xposed(env) != JNI_TRUE) {
-        const char *message = "";
-        log("ciphertool[fail] => aesDecode = decode error => xposed");
-        return charToJstring(env, message);
+    // checkEmulator
+    if (status == JNI_TRUE && checkEmulator) {
+        log("ciphertool => aesDecodeMult => checkEmulator =>");
+        status = check_is_emulator(env);
     }
-        // 模拟器
-    else if (check_is_emulator(env) != JNI_TRUE) {
-        const char *message = "";
-        log("ciphertool[fail] => aesDecode = decode error => emulator");
-        return charToJstring(env, message);
+    // checkXposed
+    if (status == JNI_TRUE && checkXposed) {
+        log("ciphertool => aesDecodeMult => checkXposed =>");
+        status = check_is_xposed(env);
     }
-        // 签名
-    else if (check_signature(env) != JNI_TRUE) {
+    // checkSignature
+    if (status == JNI_TRUE && checkSignature) {
+        log("ciphertool => aesDecodeMult => checkSignature =>");
+        status = check_signature(env, instance);
+    }
+
+    log("ciphertool => aesDecodeMult =>");
+
+    // fail
+    if (status != JNI_TRUE) {
         const char *message = "";
-        log("ciphertool[fail] => aesDecode = decode error => signature");
+        log("ciphertool => aesDecodeMult => fail");
         return charToJstring(env, message);
     }
         // succ
     else {
-        return aesDecodeString(env, instance, jstr);
+
+        const char *str = (*env)->GetStringUTFChars(env, jstr, JNI_FALSE);
+        logs("ciphertool => aesDecodeMult => olds = ", str);
+
+        const char *key = getKey();
+        logs("ciphertool => aesDecodeMult => key = ", key);
+
+        const char *decode = AES_128_ECB_PKCS5Padding_Decrypt(str, key);
+        (*env)->ReleaseStringUTFChars(env, jstr, str);
+        logs("ciphertool => aesDecodeMult => news = ", decode);
+
+        log("ciphertool => aesDecodeMult => succ");
+        return charToJstring(env, decode);
     }
 }
 

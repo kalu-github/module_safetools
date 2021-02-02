@@ -18,29 +18,29 @@ public class MainActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
 
-        new Thread(new Runnable() {
-
-            @Override
-            public void run() {
-
-                for (int i = 0; i < 100; i++) {
-                    String aesEncode = ToolUtil.aesEncode("123456789");
-                    String aesDecode = ToolUtil.aesDecode(aesEncode);
-                }
-            }
-        }).start();
-
-        new Thread(new Runnable() {
-
-            @Override
-            public void run() {
-
-                for (int i = 0; i < 100; i++) {
-                    String aesEncode = ToolUtil.aesEncode("987654321");
-                    String aesDecode = ToolUtil.aesDecode(aesEncode);
-                }
-            }
-        }).start();
+//        new Thread(new Runnable() {
+//
+//            @Override
+//            public void run() {
+//
+//                for (int i = 0; i < 100; i++) {
+//                    String aesEncode = ToolUtil.aesEncode("123456789");
+//                    String aesDecode = ToolUtil.aesDecode(aesEncode);
+//                }
+//            }
+//        }).start();
+//
+//        new Thread(new Runnable() {
+//
+//            @Override
+//            public void run() {
+//
+//                for (int i = 0; i < 100; i++) {
+//                    String aesEncode = ToolUtil.aesEncode("987654321");
+//                    String aesDecode = ToolUtil.aesDecode(aesEncode);
+//                }
+//            }
+//        }).start();
 
         // 加密
         findViewById(R.id.main_ens).setOnClickListener(new View.OnClickListener() {
@@ -53,7 +53,7 @@ public class MainActivity extends AppCompatActivity {
                 if (TextUtils.isEmpty(text)) {
                     Toast.makeText(getApplicationContext(), "请输入加密信息", Toast.LENGTH_SHORT).show();
                 } else {
-                    String aesEncode = ToolUtil.aesEncode(String.valueOf(text));
+                    String aesEncode = ToolUtil.aesEncodeMult(String.valueOf(text), true, true, true, true);
                     TextView inputs = findViewById(R.id.main_inputs);
                     inputs.setText(aesEncode);
                 }
@@ -71,7 +71,7 @@ public class MainActivity extends AppCompatActivity {
                 if (TextUtils.isEmpty(text)) {
                     Toast.makeText(getApplicationContext(), "请输入加密信息", Toast.LENGTH_SHORT).show();
                 } else {
-                    String aesDecode = ToolUtil.aesDecode(String.valueOf(text));
+                    String aesDecode = ToolUtil.aesDecodeMult(String.valueOf(text), true, true, true, true);
                     TextView outputs = findViewById(R.id.main_outputs);
                     outputs.setText(aesDecode);
                 }

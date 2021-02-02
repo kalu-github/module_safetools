@@ -39,7 +39,7 @@ JNIEXPORT JNICALL jint JNI_OnLoad(JavaVM *vm, void *reserved) {
 jboolean
 JNI_OnLoad_CheckSignature(JNIEnv *env, jobject instance) {
 
-    jint status = check_signature(env);
+    jint status = check_signature(env, instance);
     return status == JNI_TRUE;
 }
 
@@ -71,9 +71,11 @@ JNI_OnLoad_AesDecode(JNIEnv *env, jobject instance, jstring jstr) {
 }
 
 jstring
-JNI_OnLoad_AesDecodeMult(JNIEnv *env, jobject instance, jstring jstr, jboolean checkRoot, jboolean checkEmulator, jboolean checkXposed, jboolean checkSignature) {
+JNI_OnLoad_AesDecodeMult(JNIEnv *env, jobject instance, jstring jstr, jboolean checkRoot,
+                         jboolean checkEmulator, jboolean checkXposed, jboolean checkSignature) {
 
-    return aesDecode(env, instance, jstr);
+    return aesDecodeMult(env, instance, jstr, checkRoot, checkEmulator, checkXposed,
+                         checkSignature);
 }
 
 jstring
@@ -83,7 +85,9 @@ JNI_OnLoad_AesEncode(JNIEnv *env, jobject instance, jstring jstr) {
 }
 
 jstring
-JNI_OnLoad_AesEncodeMult(JNIEnv *env, jobject instance, jstring jstr, jboolean checkRoot, jboolean checkEmulator, jboolean checkXposed, jboolean checkSignature) {
+JNI_OnLoad_AesEncodeMult(JNIEnv *env, jobject instance, jstring jstr, jboolean checkRoot,
+                         jboolean checkEmulator, jboolean checkXposed, jboolean checkSignature) {
 
-    return aesEncode(env, instance, jstr);
+    return aesEncodeMult(env, instance, jstr, checkRoot, checkEmulator, checkXposed,
+                         checkSignature);
 }

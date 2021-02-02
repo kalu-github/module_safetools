@@ -69,40 +69,50 @@ JNIEXPORT jint JNICALL check_is_emulator(JNIEnv *env) {
     const char *devicechars = (*env)->GetStringUTFChars(env, devicestr, JNI_FALSE);
     (*env)->ReleaseStringUTFChars(env, devicestr, devicechars);
 
-//    log("fingerprintchars: %s", fingerprintchars);
-//    log("modelchars: %s", modelchars);
-//    log("manufacturerchars: %s", manufacturerchars);
-//    log("productchars: %s", productchars);
-//    log("brandchars: %s", brandchars);
+    logs("emulatortool => check_is_emulator => fingerprintchars = ", fingerprintchars);
+    logs("emulatortool => check_is_emulator => modelchars = ", modelchars);
+    logs("emulatortool => check_is_emulator => manufacturerchars = ", manufacturerchars);
+    logs("emulatortool => check_is_emulator => productchars = ", productchars);
+    logs("emulatortool => check_is_emulator => brandchars = ", brandchars);
+
     if (contains(fingerprintchars, "Android")) {//是模拟器 不通过
+        log("emulatortool => check_is_emulator => fail");
         return JNI_FALSE;
     }
     if (contains(fingerprintchars, "unknown")) {//是模拟器 不通过
+        log("emulatortool => check_is_emulator => fail");
         return JNI_FALSE;
     }
 
     if (contains(modelchars, "google_sdk")) {
+        log("emulatortool => check_is_emulator => fail");
         return JNI_FALSE;
     }
     if (contains(modelchars, "Emulator")) {
+        log("emulatortool => check_is_emulator => fail");
         return JNI_FALSE;
     }
     if (contains(modelchars, "Android SDK built for x86")) {
+        log("emulatortool => check_is_emulator => fail");
         return JNI_FALSE;
     }
 
     if (contains(manufacturerchars, "Genymotion")) {
+        log("emulatortool => check_is_emulator => fail");
         return JNI_FALSE;
     }
 
     if (contains(brandchars, "generic") && startsWith(devicechars, "generic")) {
+        log("emulatortool => check_is_emulator => fail");
         return JNI_FALSE;
     }
 
     if (contains(productchars, "google_sdk")) {
+        log("emulatortool => check_is_emulator => fail");
         return JNI_FALSE;
     }
 
+    log("emulatortool => check_is_emulator => succ");
     return JNI_TRUE;
 }
 
