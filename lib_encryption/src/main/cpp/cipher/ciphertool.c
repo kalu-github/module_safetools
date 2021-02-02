@@ -16,9 +16,72 @@
 #define CBC 1
 #define ECB 1
 
+/**
+ * ase 加密信息
+ * @param env
+ * @param instance
+ * @param jstr
+ * @return
+ */
+jstring aesEncodeString(JNIEnv *env, jobject instance, jstring jstr) {
+
+    const char *str = (*env)->GetStringUTFChars(env, jstr, JNI_FALSE);
+    log("ciphertool[succ] => aesEncode olds = ");
+    log(str);
+
+    const char *key = getKey();
+    log("ciphertool[succ] => aesEncode key = ");
+    log(key);
+
+    const char *encode = AES_128_ECB_PKCS5Padding_Encrypt(str, key);
+    (*env)->
+            ReleaseStringUTFChars(env, jstr, str
+    );
+    log("ciphertool[succ] => aesEncode news = ");
+    log(encode);
+    return
+            charToJstring(env, encode
+            );
+}
+
+/**
+ * ase 解密信息
+ * @param env
+ * @param instance
+ * @param jstr
+ * @return
+ */
+jstring aesDecodeString(JNIEnv *env, jobject instance, jstring jstr) {
+
+    log("ciphertool[fail] => aesDecode = start");
+
+    const char *str = (*env)->GetStringUTFChars(env, jstr, JNI_FALSE);
+    log("ciphertool[succ] => aesDecode olds = ");
+    log(str);
+
+    const char *key = getKey();
+    log("ciphertool[succ] => aesDecode key = ");
+    log(key);
+
+    const char *decode = AES_128_ECB_PKCS5Padding_Decrypt(str, key);
+    (*env)->ReleaseStringUTFChars(env, jstr, str);
+    log("ciphertool[succ] => aesDecode news = ");
+    log(decode);
+
+    return charToJstring(env, decode);
+}
+
+//////////////////////////////////////////////////////////////////////////////////////////////////
+
 //Java_lib_kalu_core_cmake_cipher_CipherTool_aesEncode(JNIEnv *env, jobject instance, jstring jstr) {
 JNIEXPORT jstring JNICALL
 aesEncode(JNIEnv *env, jobject instance, jstring jstr) {
+    return aesEncodeString(env, instance, jstr);
+}
+
+JNIEXPORT jstring JNICALL
+aesEncodeMult(JNIEnv *env, jobject instance, jstring jstr, jboolean checkRoot,
+              jboolean checkEmulator, jboolean checkXposed, jboolean checkSignature) {
 
     log("ciphertool[fail] => aesEncode = start");
 
@@ -46,27 +109,20 @@ aesEncode(JNIEnv *env, jobject instance, jstring jstr) {
     }
         // succ
     else {
-
-        const char *str = (*env)->GetStringUTFChars(env, jstr, JNI_FALSE);
-        log("ciphertool[succ] => aesEncode olds = ");
-        log(str);
-
-        const char *key = getKey();
-        log("ciphertool[succ] => aesEncode key = ");
-        log(key);
-
-        const char *encode = AES_128_ECB_PKCS5Padding_Encrypt(str, key);
-        (*env)->ReleaseStringUTFChars(env, jstr, str);
-        log("ciphertool[succ] => aesEncode news = ");
-        log(encode);
-
-        return charToJstring(env, encode);
+        return aesEncodeString(env, instance, jstr);
     }
 }
 
 //Java_lib_kalu_core_cmake_cipher_CipherTool_aesDecode(JNIEnv *env, jobject instance, jstring jstr) {
 JNIEXPORT jstring JNICALL
 aesDecode(JNIEnv *env, jobject instance, jstring jstr) {
+    return aesDecodeString(env, instance, jstr);
+}
+
+//Java_lib_kalu_core_cmake_cipher_CipherTool_aesDecode(JNIEnv *env, jobject instance, jstring jstr) {
+JNIEXPORT jstring JNICALL
+aesDecodeMult(JNIEnv *env, jobject instance, jstring jstr, jboolean checkRoot,
+              jboolean checkEmulator, jboolean checkXposed, jboolean checkSignature) {
 
     log("ciphertool[fail] => aesDecode = start");
 
@@ -94,21 +150,7 @@ aesDecode(JNIEnv *env, jobject instance, jstring jstr) {
     }
         // succ
     else {
-
-        const char *str = (*env)->GetStringUTFChars(env, jstr, JNI_FALSE);
-        log("ciphertool[succ] => aesDecode olds = ");
-        log(str);
-
-        const char *key = getKey();
-        log("ciphertool[succ] => aesDecode key = ");
-        log(key);
-
-        const char *decode = AES_128_ECB_PKCS5Padding_Decrypt(str, key);
-        (*env)->ReleaseStringUTFChars(env, jstr, str);
-        log("ciphertool[succ] => aesDecode news = ");
-        log(decode);
-
-        return charToJstring(env, decode);
+        return aesDecodeString(env, instance, jstr);
     }
 }
 

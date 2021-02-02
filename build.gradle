@@ -1,7 +1,7 @@
 buildscript {
 
     // 编译: 2020-01-03
-    ext.support_gradle_version = '4.0.1'
+    ext.support_gradle_version = '4.1.2'
     ext.support_aspectjx_version = "2.0.10" // 不要改动
     ext.support_andresguard_version = "1.2.18"// 不要改动
 

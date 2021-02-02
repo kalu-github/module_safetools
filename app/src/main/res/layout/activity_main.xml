@@ -1,58 +1,101 @@
 <?xml version="1.0" encoding="utf-8"?>
-<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="#ffffff"
     android:gravity="center"
     android:orientation="vertical"
     android:paddingLeft="20dp"
     android:paddingRight="20dp">
 
-    <TextView
-        android:id="@+id/button0"
+    <EditText
+        android:id="@+id/main_input"
         android:layout_width="match_parent"
         android:layout_height="50dp"
-        android:background="#33cccccc"
-        android:gravity="center_vertical|left"
+        android:background="#aacccccc"
+        android:hint="请输入加密信息"
         android:paddingLeft="10dp"
         android:paddingRight="10dp"
-        android:text="安全混淆123456789"
         android:textSize="14sp" />
 
     <TextView
-        android:id="@+id/button1"
+        android:id="@+id/main_inputs"
         android:layout_width="match_parent"
         android:layout_height="50dp"
+        android:layout_below="@id/main_input"
         android:layout_marginTop="10dp"
-        android:background="#33cccccc"
+        android:background="#aacccccc"
         android:gravity="center_vertical|left"
+        android:hint="加密信息"
         android:paddingLeft="10dp"
         android:paddingRight="10dp"
-        android:text="点击加密"
         android:textSize="14sp" />
 
     <TextView
-        android:id="@+id/button2"
+        android:id="@+id/main_outputs"
         android:layout_width="match_parent"
         android:layout_height="50dp"
+        android:layout_below="@id/main_inputs"
         android:layout_marginTop="10dp"
-        android:background="#33cccccc"
+        android:background="#aacccccc"
         android:gravity="center_vertical|left"
+        android:hint="解密信息"
         android:paddingLeft="10dp"
         android:paddingRight="10dp"
-        android:text="点击解密"
         android:textSize="14sp" />
 
     <TextView
-        android:id="@+id/button3"
-        android:layout_width="match_parent"
+        android:id="@+id/main_des"
+        android:layout_width="80dp"
         android:layout_height="50dp"
+        android:layout_below="@id/main_outputs"
+        android:layout_centerHorizontal="true"
         android:layout_marginTop="10dp"
         android:background="#33cccccc"
-        android:gravity="center_vertical|left"
+        android:gravity="center"
+        android:paddingLeft="10dp"
+        android:paddingRight="10dp"
+        android:text="解密"
+        android:textSize="14sp" />
+
+    <TextView
+        android:id="@+id/main_ens"
+        android:layout_width="80dp"
+        android:layout_height="50dp"
+        android:layout_below="@id/main_outputs"
+        android:layout_marginTop="10dp"
+        android:background="#33cccccc"
+        android:gravity="center"
+        android:paddingLeft="10dp"
+        android:paddingRight="10dp"
+        android:text="加密"
+        android:textSize="14sp" />
+
+    <TextView
+        android:id="@+id/main_reset"
+        android:layout_width="80dp"
+        android:layout_height="50dp"
+        android:layout_below="@id/main_outputs"
+        android:layout_alignParentRight="true"
+        android:layout_marginTop="10dp"
+        android:background="#33cccccc"
+        android:gravity="center"
         android:paddingLeft="10dp"
         android:paddingRight="10dp"
         android:text="重置"
         android:textSize="14sp" />
 
-</LinearLayout>
+    <TextView
+        android:id="@+id/main_emulator"
+        android:layout_width="match_parent"
+        android:layout_height="50dp"
+        android:layout_below="@id/main_des"
+        android:layout_centerHorizontal="true"
+        android:layout_marginTop="10dp"
+        android:background="#33cccccc"
+        android:gravity="center"
+        android:paddingLeft="10dp"
+        android:paddingRight="10dp"
+        android:text="检测模拟器"
+        android:textSize="14sp" />
+
+</RelativeLayout>

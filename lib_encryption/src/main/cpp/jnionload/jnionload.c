@@ -3,6 +3,10 @@
 #include "jnionload.h"
 #include "../cipher/ciphertool.h"
 #include "../tool/applicationtool.h"
+#include "../tool/xposedtool.h"
+#include "../tool/emulatortool.h"
+#include "../tool/roottool.h"
+#include "../tool/signaturetool.h"
 
 JNIEXPORT JNICALL jint JNI_OnLoad(JavaVM *vm, void *reserved) {
 
@@ -12,11 +16,17 @@ JNIEXPORT JNICALL jint JNI_OnLoad(JavaVM *vm, void *reserved) {
         return JNI_ERR;
     }
 
-    // chiper
-    jclass cipher_clazz = (*env)->FindClass(env, "lib/kalu/encryption/cipher/CipherTool");
+    // ToolUtil
+    jclass cipher_clazz = (*env)->FindClass(env, "lib/kalu/encryption/ToolUtil");
     static JNINativeMethod cipher_methods[] = {
-            {"aesDecode", "(Ljava/lang/String;)Ljava/lang/String;", (void *) JNI_OnLoad_AesDecode},
-            {"aesEncode", "(Ljava/lang/String;)Ljava/lang/String;", (void *) JNI_OnLoad_AesEncode},
+            {"aesDecode",      "(Ljava/lang/String;)Ljava/lang/String;",     JNI_OnLoad_AesDecode},
+            {"aesDecodeMult",  "(Ljava/lang/String;ZZZZ)Ljava/lang/String;", JNI_OnLoad_AesDecodeMult},
+            {"aesEncode",      "(Ljava/lang/String;)Ljava/lang/String;",     JNI_OnLoad_AesEncode},
+            {"aesEncodeMult",  "(Ljava/lang/String;ZZZZ)Ljava/lang/String;", JNI_OnLoad_AesEncodeMult},
+            {"checkEmulator",  "()Z",                                        JNI_OnLoad_CheckEmulator},
+            {"checkXposed",    "()Z",                                        JNI_OnLoad_CheckXposed},
+            {"checkRoot",      "()Z",                                        JNI_OnLoad_CheckRoot},
+            {"checkSignature", "()Z",                                        JNI_OnLoad_CheckSignature},
     };
 
     jint cipher_size = sizeof(cipher_methods) / sizeof(cipher_methods[0]);
@@ -26,6 +36,34 @@ JNIEXPORT JNICALL jint JNI_OnLoad(JavaVM *vm, void *reserved) {
     return JNI_VERSION_1_6;
 }
 
+jboolean
+JNI_OnLoad_CheckSignature(JNIEnv *env, jobject instance) {
+
+    jint status = check_signature(env);
+    return status == JNI_TRUE;
+}
+
+jboolean
+JNI_OnLoad_CheckRoot(JNIEnv *env, jobject instance) {
+
+    jint status = check_is_root(env);
+    return status == JNI_TRUE;
+}
+
+jboolean
+JNI_OnLoad_CheckEmulator(JNIEnv *env, jobject instance) {
+
+    jint status = check_is_emulator(env);
+    return status == JNI_TRUE;
+}
+
+jboolean
+JNI_OnLoad_CheckXposed(JNIEnv *env, jobject instance) {
+
+    jint status = check_is_xposed(env);
+    return status == JNI_TRUE;
+}
+
 jstring
 JNI_OnLoad_AesDecode(JNIEnv *env, jobject instance, jstring jstr) {
 
@@ -33,7 +71,19 @@ JNI_OnLoad_AesDecode(JNIEnv *env, jobject instance, jstring jstr) {
 }
 
 jstring
+JNI_OnLoad_AesDecodeMult(JNIEnv *env, jobject instance, jstring jstr, jboolean checkRoot, jboolean checkEmulator, jboolean checkXposed, jboolean checkSignature) {
+
+    return aesDecode(env, instance, jstr);
+}
+
+jstring
 JNI_OnLoad_AesEncode(JNIEnv *env, jobject instance, jstring jstr) {
+
+    return aesEncode(env, instance, jstr);
+}
+
+jstring
+JNI_OnLoad_AesEncodeMult(JNIEnv *env, jobject instance, jstring jstr, jboolean checkRoot, jboolean checkEmulator, jboolean checkXposed, jboolean checkSignature) {
 
     return aesEncode(env, instance, jstr);
 }
