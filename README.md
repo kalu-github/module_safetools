@@ -6,7 +6,13 @@
 #
 #### jni签名校验
 ```
-com.kalu.encryption
+1. jni签名信息
+- com.kalu.encryption
+- lib_jnitools/src/main/cpp/tool/signaturetool.h
+
+2. jni日志开关
+- 0 关闭日志 1 打开日志
+- lib_jnitools/src/main/cpp/tool/debugtool.h
 ```
 
 #
