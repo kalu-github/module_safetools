@@ -57,23 +57,9 @@ android {
     sourceSets.main {
         jni.srcDirs = []
     }
-
-//    sourceSets {
-//        main {
-//            jniLibs.srcDirs 'src/main/cpp/libs'
-//        }
-//    }
-//
-//    packagingOptions {
-//        pickFirst "**/libcatic-jpeg.so"
-//    }
 }
 
 dependencies {
     implementation fileTree(dir: 'libs', include: ['*.jar', '*.aar'])
-
     implementation rootProject.ext.dependencies.support_activity
-//    implementation rootProject.ext.dependencies.support_fragment
-//    implementation rootProject.ext.dependencies.support_annotation
-//    implementation rootProject.ext.dependencies.support_appcompat
 }

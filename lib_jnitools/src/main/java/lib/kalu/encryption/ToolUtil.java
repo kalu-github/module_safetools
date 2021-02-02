@@ -15,6 +15,7 @@ public final class ToolUtil {
      * @param str 待加密信息
      * @return 加密后信息
      */
+    @Keep
     public static native String aesEncode(String str);
 
     /**
@@ -27,6 +28,7 @@ public final class ToolUtil {
      * @param checkSignature 是否检测app签名信息
      * @return 加密后信息
      */
+    @Keep
     public static native String aesEncodeMult(String str, boolean checkRoot, boolean checkEmulator, boolean checkXposed, boolean checkSignature);
 
     /**
@@ -35,6 +37,7 @@ public final class ToolUtil {
      * @param str 待解密信息
      * @return 解密信息
      */
+    @Keep
     public static native String aesDecode(String str);
 
     /**
@@ -48,6 +51,7 @@ public final class ToolUtil {
      * @param checkSignature 是否检测app签名信息
      * @return 解密信息
      */
+    @Keep
     public static native String aesDecodeMult(String str, boolean checkRoot, boolean checkEmulator, boolean checkXposed, boolean checkSignature);
 
     /**
@@ -55,6 +59,7 @@ public final class ToolUtil {
      *
      * @return true: 通过, fasle: 未通过
      */
+    @Keep
     public static native boolean checkSignature();
 
     /**
@@ -62,6 +67,7 @@ public final class ToolUtil {
      *
      * @return true: 通过, fasle: 未通过
      */
+    @Keep
     public static native boolean checkRoot();
 
 
@@ -70,6 +76,7 @@ public final class ToolUtil {
      *
      * @return true: 通过, fasle: 未通过
      */
+    @Keep
     public static native boolean checkEmulator();
 
     /**
@@ -77,6 +84,6 @@ public final class ToolUtil {
      *
      * @return true: 通过, fasle: 未通过
      */
+    @Keep
     public static native boolean checkXposed();
-
 }
