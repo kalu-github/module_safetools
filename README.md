@@ -40,5 +40,5 @@ com.kalu.encryption
 ```
 1. jni 字符串加密解密 - 100%
 2. app 签名校验 - 100%
-3. app xpose框架检测 - 90%
+3. app xpose框架检测 - 90%, 暂未支持android多用户
 ```
