@@ -89,13 +89,13 @@ public final class ToolUtil {
      */
     @Keep
     public static native boolean checkXposed();
-
-    @Keep
-    static void makeText(Context context, String msg) {
-
-        try {
-            Toast.makeText(context, msg, Toast.LENGTH_SHORT).show();
-        } catch (Exception e) {
-        }
-    }
+//
+//    @Keep
+//    static void makeText(Context context, String msg) {
+//
+//        try {
+//            Toast.makeText(context, msg, Toast.LENGTH_SHORT).show();
+//        } catch (Exception e) {
+//        }
+//    }
 }
