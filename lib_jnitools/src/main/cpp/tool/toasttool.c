@@ -20,14 +20,29 @@ void toast(JNIEnv *env, jobject object, const char *message) {
 //    (*env)->CallStaticVoidMethod(env, object, mid, params1, params2);
 
     jclass cls = (*env)->FindClass(env, "android/widget/Toast");
+    if (NULL == cls)
+        return;
+
     jmethodID mid_makeText = (*env)->GetStaticMethodID(env, cls, "makeText",
                                                        "(Landroid/content/Context;Ljava/lang/CharSequence;I)Landroid/widget/Toast;");
+    if (NULL == mid_makeText)
+        return;
 
     jobject context = getApplication(env);
+    if (NULL == context)
+        return;
+
     jstring text = charToJstring(env, message);
+    if (NULL == text)
+        return;
 
     jobject toast = (*env)->CallStaticObjectMethod(env, cls, mid_makeText, context, text, 0);
+    if (NULL == toast)
+        return;
+
     jmethodID mid_show = (*env)->GetMethodID(env, cls, "show", "()V");
+    if (NULL == mid_show)
+        return;
 
     (*env)->CallVoidMethod(env, toast, mid_show);
 }
