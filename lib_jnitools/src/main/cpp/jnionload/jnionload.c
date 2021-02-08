@@ -2,7 +2,6 @@
 #include <string.h>
 #include "jnionload.h"
 #include "../cipher/ciphertool.h"
-#include "../tool/applicationtool.h"
 #include "../tool/xposedtool.h"
 #include "../tool/emulatortool.h"
 #include "../tool/roottool.h"
@@ -17,7 +16,7 @@ JNIEXPORT JNICALL jint JNI_OnLoad(JavaVM *vm, void *reserved) {
     }
 
     // ToolUtil
-    jclass cipher_clazz = (*env)->FindClass(env, "lib/kalu/encryption/ToolUtil");
+    jclass cipher_clazz = (*env)->FindClass(env, "lib/kalu/jnitools/JniUtils");
     static JNINativeMethod cipher_methods[] = {
             {"aesDecode",      "(Ljava/lang/String;)Ljava/lang/String;",     JNI_OnLoad_AesDecode},
             {"aesDecodeMult",  "(Ljava/lang/String;ZZZZ)Ljava/lang/String;", JNI_OnLoad_AesDecodeMult},
@@ -60,7 +59,7 @@ JNI_OnLoad_CheckEmulator(JNIEnv *env, jobject instance) {
 jboolean
 JNI_OnLoad_CheckXposed(JNIEnv *env, jobject instance) {
 
-    jint status = check_is_xposed(env);
+    jint status = jni_check_xposed(env);
     return status == JNI_TRUE;
 }
 

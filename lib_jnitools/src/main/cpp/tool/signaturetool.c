@@ -3,9 +3,7 @@
 #include <jni.h>
 #include "signaturetool.h"
 #include "logtool.h"
-#include "applicationtool.h"
-#include "packagetool.h"
-#include "toasttool.h"
+#include "androidtool.h"
 
 jint check_signature(JNIEnv *env, jobject object) {
 
@@ -65,8 +63,8 @@ jint check_signature(JNIEnv *env, jobject object) {
         // fail
     else {
         log("check_signature => 签名信息不匹配");
-        const char *message = "错误：签名信息不匹配";
-        toast(env, object, message);
+//        const char *message = "错误：签名信息不匹配";
+//        toast(env, object, message);
         return JNI_FALSE;
     }
 }

@@ -48,7 +48,7 @@ ext {
 
     // 版本
     android = [
-            applicationId    : "com.kalu.encryption",
+            applicationId    : "com.kalu.jnitools",
             compileSdkVersion: 28,
             buildToolsVersion: "28.0.3",
             minSdkVersion    : 23, // 6.0+

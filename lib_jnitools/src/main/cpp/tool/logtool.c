@@ -1,6 +1,6 @@
 #include <android/log.h>
 #include "logtool.h"
-#include "debugtool.h"
+#include "androidtool.h"
 #include <stdio.h>
 #include <stdlib.h>
 #include <string.h>

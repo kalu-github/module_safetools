@@ -2,7 +2,6 @@
 #define CHECK_EMULATOR_IN_NDK_CHECK_EMULATOR_H
 
 #include "jni.h"
-#include "debugtool.h"
 
 
 /**

@@ -25,18 +25,15 @@ add_library(
         # Provides a relative path to your source file(s).
 
         # tool
-        src/main/cpp/tool/applicationtool.c
         src/main/cpp/tool/stringtool.c
         src/main/cpp/tool/keytool.c
         src/main/cpp/tool/signaturetool.c
         src/main/cpp/tool/emulatortool.c
-        src/main/cpp/tool/debugtool.c
         src/main/cpp/tool/logtool.c
-        src/main/cpp/tool/contexttool.c
-        src/main/cpp/tool/packagetool.c
         src/main/cpp/tool/xposedtool.c
         src/main/cpp/tool/roottool.c
-        src/main/cpp/tool/toasttool.c
+        src/main/cpp/tool/androidtool.c
+        src/main/cpp/tool/androidtool.h
 
         # aes
         src/main/cpp/aes/aes.c

@@ -7,7 +7,7 @@
 #### 配置说明
 ```
 1. jni签名信息
-- com.kalu.encryption
+- com.kalu.jnitools
 - lib_jnitools/src/main/cpp/tool/signaturetool.h
 
 2. jni日志开关

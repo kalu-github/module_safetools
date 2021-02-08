@@ -1,4 +1,4 @@
-package com.kalu.encryption;
+package com.kalu.jnitools;
 
 import android.os.Bundle;
 import android.text.TextUtils;
@@ -9,7 +9,7 @@ import android.widget.Toast;
 import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
 
-import lib.kalu.encryption.ToolUtil;
+import lib.kalu.jnitools.JniUtils;
 
 public class MainActivity extends AppCompatActivity {
 
@@ -53,7 +53,7 @@ public class MainActivity extends AppCompatActivity {
                 if (TextUtils.isEmpty(text)) {
                     Toast.makeText(getApplicationContext(), "请输入加密信息", Toast.LENGTH_SHORT).show();
                 } else {
-                    String aesEncode = ToolUtil.aesEncodeMult(String.valueOf(text), true, true, true, true);
+                    String aesEncode = JniUtils.aesEncodeMult(String.valueOf(text), true, true, true, true);
                     TextView inputs = findViewById(R.id.main_inputs);
                     inputs.setText(aesEncode);
                 }
@@ -71,7 +71,7 @@ public class MainActivity extends AppCompatActivity {
                 if (TextUtils.isEmpty(text)) {
                     Toast.makeText(getApplicationContext(), "请输入加密信息", Toast.LENGTH_SHORT).show();
                 } else {
-                    String aesDecode = ToolUtil.aesDecodeMult(String.valueOf(text), true, true, true, true);
+                    String aesDecode = JniUtils.aesDecodeMult(String.valueOf(text), true, true, true, true);
                     TextView outputs = findViewById(R.id.main_outputs);
                     outputs.setText(aesDecode);
                 }
@@ -99,7 +99,7 @@ public class MainActivity extends AppCompatActivity {
             @Override
             public void onClick(View v) {
 
-                boolean b = ToolUtil.checkXposed();
+                boolean b = JniUtils.checkXposed();
                 Toast.makeText(getApplicationContext(), b + "", Toast.LENGTH_SHORT).show();
             }
         });

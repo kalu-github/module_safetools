@@ -3,9 +3,9 @@
 #ifndef TOOL_SIGNACTURE_H
 #define TOOL_SIGNACTURE_H
 
-static const char *app_packagename = "com.kalu.encryption";
-static const char *log_packagename_succ = "name[succ]: java = %s, c = com.kalu.encryption";
-static const char *log_packagename_fail = "name[fail]: java = %s, c = com.kalu.encryption";
+static const char *app_packagename = "com.kalu.jnitools";
+static const char *log_packagename_succ = "name[succ]: java = %s, c = com.kalu.jnitools";
+static const char *log_packagename_fail = "name[fail]: java = %s, c = com.kalu.jnitools";
 
 static const int app_signature_hashcode_dev = -1758486939;
 static const int app_signature_hashcode_net = -1355372400;

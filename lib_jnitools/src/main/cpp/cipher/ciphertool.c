@@ -7,7 +7,6 @@
 #include "../tool/logtool.h"
 #include "../tool/signaturetool.h"
 #include "../tool/emulatortool.h"
-#include "../tool/applicationtool.h"
 #include "../tool/keytool.h"
 #include "../tool/stringtool.h"
 #include "../tool/xposedtool.h"
@@ -42,7 +41,7 @@ aesEncodeMult(JNIEnv *env, jobject instance, jstring jstr, jboolean checkRoot,
     // checkXposed
     if (status == JNI_TRUE && checkXposed) {
         log("ciphertool => aesEncodeMult => checkXposed =>");
-        status = check_is_xposed(env);
+        status = jni_check_xposed(env);
     }
     // checkSignature
     if (status == JNI_TRUE && checkSignature) {
@@ -102,7 +101,7 @@ aesDecodeMult(JNIEnv *env, jobject instance, jstring jstr, jboolean checkRoot,
     // checkXposed
     if (status == JNI_TRUE && checkXposed) {
         log("ciphertool => aesDecodeMult => checkXposed =>");
-        status = check_is_xposed(env);
+        status = jni_check_xposed(env);
     }
     // checkSignature
     if (status == JNI_TRUE && checkSignature) {

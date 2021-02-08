@@ -1,12 +1,9 @@
-package lib.kalu.encryption;
-
-import android.content.Context;
-import android.widget.Toast;
+package lib.kalu.jnitools;
 
 import androidx.annotation.Keep;
 
 @Keep
-public final class ToolUtil {
+public final class JniUtils {
 
     static {
         System.loadLibrary("tools");

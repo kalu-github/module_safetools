@@ -97,8 +97,8 @@ dependencies {
     implementation fileTree(include: ['*.jar'], dir: 'libs')
 
     // 模块依赖
-//    implementation project(':lib_jnitools')
-    implementation(name: 'lib_jnitools-release', ext: 'aar')
+    implementation project(':lib_jnitools')
+//    implementation(name: 'lib_jnitools-release', ext: 'aar')
 
     // 三方依赖
     implementation rootProject.ext.dependencies.support_activity
