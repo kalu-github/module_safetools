@@ -98,4 +98,18 @@
         android:text="检测模拟器"
         android:textSize="14sp" />
 
+    <TextView
+        android:id="@+id/main_signature"
+        android:layout_width="match_parent"
+        android:layout_height="50dp"
+        android:layout_below="@id/main_emulator"
+        android:layout_centerHorizontal="true"
+        android:layout_marginTop="10dp"
+        android:background="#33cccccc"
+        android:gravity="center"
+        android:paddingLeft="10dp"
+        android:paddingRight="10dp"
+        android:text="检测签名信息"
+        android:textSize="14sp" />
+
 </RelativeLayout>

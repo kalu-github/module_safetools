@@ -35,12 +35,12 @@ int isdebug() {
 
 jclass getClass(JNIEnv *env, jobject object) {
 
-    log("androidtool => getClass => ↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓");
+//    log("androidtool => getClass => ↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓");
 
     jclass jclass_object = (*env)->GetObjectClass(env, object);
-    log("androidtool => getClass => jclass_object");
+//    log("androidtool => getClass => jclass_object");
 
-    log("androidtool => getClass => ↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑");
+//    log("androidtool => getClass => ↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑");
     return jclass_object;
 }
 
@@ -69,38 +69,38 @@ jclass getClass(JNIEnv *env, jobject object) {
 
 jobject getContext(JNIEnv *env) {
 
-    log("androidtool => getContext => ↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓");
+//    log("androidtool => getContext => ↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓");
 
     jclass jclass_android$app$ActivityThread = (*env)->FindClass(env, "android/app/ActivityThread");
-    log("androidtool => getContext => jclass_android$app$ActivityThread");
+//    log("androidtool => getContext => jclass_android$app$ActivityThread");
 
     jmethodID jmethodId_currentActivityThread = (*env)->GetStaticMethodID(env,
                                                                           jclass_android$app$ActivityThread,
                                                                           "currentActivityThread",
                                                                           "()Landroid/app/ActivityThread;");
-    log("androidtool => getContext => jmethodId_currentActivityThread");
+//    log("androidtool => getContext => jmethodId_currentActivityThread");
 
     jobject jobject_currentActivityThread = (*env)->CallStaticObjectMethod(env,
                                                                            jclass_android$app$ActivityThread,
                                                                            jmethodId_currentActivityThread);
-    log("androidtool => getContext => jobject_currentActivityThread");
+//    log("androidtool => getContext => jobject_currentActivityThread");
 
     jmethodID jmethodId_getApplication = (*env)->GetMethodID(env, jclass_android$app$ActivityThread,
                                                              "getApplication",
                                                              "()Landroid/app/Application;");
-    log("androidtool => getContext => jmethodId_getApplication");
+//    log("androidtool => getContext => jmethodId_getApplication");
 
     jobject jobject_context = (*env)->CallObjectMethod(env, jobject_currentActivityThread,
                                                        jmethodId_getApplication);
-    log("androidtool => getContext => jobject_context");
+//    log("androidtool => getContext => jobject_context");
 
-    log("androidtool => getContext => ↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑");
+//    log("androidtool => getContext => ↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑");
     return jobject_context;
 }
 
 char *getFilesDirAbsolutePath(JNIEnv *env) {
 
-    log("androidtool => getFilesDirAbsolutePath => ↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓");
+//    log("androidtool => getFilesDirAbsolutePath => ↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓");
 
     jobject jobject_context = getContext(env);
     log("androidtool => getFilesDirAbsolutePath => jobject_context");
@@ -216,6 +216,8 @@ jobject getPackageInfo(JNIEnv *env) {
 
 void toast(JNIEnv *env, jobject object, const char *message) {
 
+    log("androidtool => toast => ↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓");
+
 //    jclass myclass = (*env)->FindClass(env, "lib/kalu/encryption/ToolUtil");
 //    jmethodID mid = (*env)->GetStaticMethodID(env, myclass, "makeText",
 //                                              "(Landroid/content/Context;Ljava/lang/String;)V");
@@ -224,6 +226,89 @@ void toast(JNIEnv *env, jobject object, const char *message) {
 //    jstring params2 = charToJstring(env, message);
 //
 //    (*env)->CallStaticVoidMethod(env, object, mid, params1, params2);
+
+    // 判断当前线程
+    jobject jobject_context = getContext(env);
+    log("androidtool => toast => jobject_context");
+
+    jclass jclass_context = getClass(env, jobject_context);
+    log("androidtool => toast => jclass_context");
+
+    //  getApplicationContext().getMainLooper()
+    jmethodID jmethodId_getMainLooper = (*env)->GetMethodID(env, jclass_context,
+                                                            "getMainLooper",
+                                                            "()Landroid/os/Looper;");
+    log("androidtool => toast => jmethodId_getMainLooper");
+
+    jobject jobject_getMainLooper = (*env)->CallObjectMethod(env, jobject_context,
+                                                             jmethodId_getMainLooper);
+    log("androidtool => toast => jobject_getMainLooper");
+
+    jclass jclass_getMainLooper = getClass(env, jobject_getMainLooper);
+    log("androidtool => toast => jclass_getMainLooper");
+
+    //  getApplicationContext().getMainLooper().getThread();
+    jmethodID jmethodId_getThread = (*env)->GetMethodID(env, jclass_getMainLooper, "getThread",
+                                                        "()Ljava/lang/Thread;");
+    log("androidtool => toast => jmethodId_getThread");
+
+    jobject jobject_getThread = (*env)->CallObjectMethod(env, jobject_getMainLooper,
+                                                         jmethodId_getThread);
+    log("androidtool => toast => jobject_getThread");
+
+    jclass jclass_getThread = getClass(env, jobject_getThread);
+    log("androidtool => toast => jclass_getThread");
+
+    // getApplicationContext().getMainLooper().getThread().getId();
+    jmethodID jmethodId_getId_app = (*env)->GetMethodID(env, jclass_getThread, "getId",
+                                                        "()J");
+    log("androidtool => toast => jmethodId_getId_app");
+
+    jlong jlong_getId_app = (*env)->CallLongMethod(env, jobject_getThread, jmethodId_getId_app);
+    log("androidtool => toast => jlong_getId_app");
+
+    log("androidtool => toast => ----");
+
+    // Thread.currentThread();
+    jclass jclass_java$lang$Thread = (*env)->FindClass(env, "java/lang/Thread");
+    log("androidtool => toast => jclass_java$lang$Thread");
+
+    jmethodID jmethodId_currentThread = (*env)->GetStaticMethodID(env, jclass_java$lang$Thread,
+                                                                  "currentThread",
+                                                                  "()Ljava/lang/Thread;");
+    log("androidtool => toast => jmethodId_currentThread");
+
+    jobject jobject_currentThread = (*env)->CallStaticObjectMethod(env, jclass_java$lang$Thread,
+                                                                   jmethodId_currentThread);
+    log("androidtool => toast => jobject_currentThread");
+
+    jclass jclass_currentThread = getClass(env, jobject_currentThread);
+    log("androidtool => toast => jclass_currentThread");
+
+    // Thread.currentThread().getId();
+    jmethodID jmethodId_getId_thread = (*env)->GetMethodID(env, jclass_currentThread, "getId",
+                                                                "()J");
+    log("androidtool => toast => jmethodId_getId_thread");
+
+    jlong jlong_getId_thread = (*env)->CallLongMethod(env, jobject_currentThread,
+                                                        jmethodId_getId_thread);
+    log("androidtool => toast => jlong_getId_thread");
+
+
+    // 分线程, Looper.prepare();
+    if (jlong_getId_app != jlong_getId_thread) {
+
+        log("androidtool => toast => 分线程1");
+        log("androidtool => toast => Looper.prepare()");
+
+        jclass jclass_android$os$Looper = (*env)->FindClass(env, "android/os/Looper");
+        jmethodID jmethodId_prepare = (*env)->GetStaticMethodID(env, jclass_android$os$Looper,
+                                                                "prepare", "()V");
+        (*env)->CallStaticVoidMethod(env, jclass_android$os$Looper, jmethodId_prepare);
+    }
+    else{
+        log("androidtool => toast => 主线程1");
+    }
 
     jclass cls = (*env)->FindClass(env, "android/widget/Toast");
     if (NULL == cls)
@@ -246,9 +331,27 @@ void toast(JNIEnv *env, jobject object, const char *message) {
     if (NULL == toast)
         return;
 
-    jmethodID mid_show = (*env)->GetMethodID(env, cls, "show", "()V");
-    if (NULL == mid_show)
+    jmethodID jmethodId_show = (*env)->GetMethodID(env, cls, "show", "()V");
+    if (NULL == jmethodId_show)
         return;
 
-    (*env)->CallVoidMethod(env, toast, mid_show);
+    (*env)->CallVoidMethod(env, toast, jmethodId_show);
+
+    /////////////////////////////////////////
+
+    // 分线程, Looper.loop();
+    if (jlong_getId_app != jlong_getId_thread) {
+
+        log("androidtool => toast => 分线程2");
+        log("androidtool => toast => Looper.loop()");
+
+        jclass jclass_android$os$Looper = (*env)->FindClass(env, "android/os/Looper");
+        jmethodID jmethodId_loop = (*env)->GetStaticMethodID(env, jclass_android$os$Looper, "loop",
+                                                             "()V");
+        (*env)->CallStaticVoidMethod(env, jclass_android$os$Looper, jmethodId_loop);
+    } else {
+        log("androidtool => toast => 主线程2");
+    }
+
+    log("androidtool => toast => ↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑");
 }

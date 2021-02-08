@@ -103,5 +103,25 @@ public class MainActivity extends AppCompatActivity {
                 Toast.makeText(getApplicationContext(), b + "", Toast.LENGTH_SHORT).show();
             }
         });
+
+        // 检测签名信息
+        findViewById(R.id.main_signature).setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+
+                boolean b = JniUtils.checkSignature();
+
+//                new Thread(new Runnable(){
+//
+//                    @Override
+//                    public void run() {
+//
+//                        boolean b = JniUtils.checkSignature();
+//
+//                    }
+//                }).start();
+
+            }
+        });
     }
 }
