@@ -105,22 +105,28 @@ public class MainActivity extends AppCompatActivity {
         });
 
         // 检测签名信息
-        findViewById(R.id.main_signature).setOnClickListener(new View.OnClickListener() {
+        findViewById(R.id.main_signature1).setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
 
-                boolean b = JniUtils.checkSignature();
+                JniUtils.checkSignature();
+            }
+        });
 
-//                new Thread(new Runnable(){
-//
-//                    @Override
-//                    public void run() {
-//
-//                        boolean b = JniUtils.checkSignature();
-//
-//                    }
-//                }).start();
+        // 检测签名信息
+        findViewById(R.id.main_signature2).setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
 
+                new Thread(new Runnable() {
+
+                    @Override
+                    public void run() {
+
+                        JniUtils.checkSignature();
+
+                    }
+                }).start();
             }
         });
     }

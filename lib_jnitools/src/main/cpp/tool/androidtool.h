@@ -25,4 +25,12 @@ jobject getPackageInfo(JNIEnv *env);
 
 void toast(JNIEnv *env, jobject object, const char *message);
 
+jlong getMainThreadId(JNIEnv *env);
+
+jlong getCurrentThreadId(JNIEnv *env);
+
+void runLooperPrepare(JNIEnv *env);
+
+void runLooperLoop(JNIEnv *env);
+
 #endif //CMAKE_JNITOOLS_DEVICETOOL_H
