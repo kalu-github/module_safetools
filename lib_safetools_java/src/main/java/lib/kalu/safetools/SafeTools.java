@@ -10,6 +10,7 @@ import java.io.File;
 @Keep
 public final class SafeTools {
 
+    @Keep
     public static final boolean checkSafe() {
 
         boolean checkSignature = checkSignature();
