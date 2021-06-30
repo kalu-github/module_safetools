@@ -1,12 +1,14 @@
 <?xml version="1.0" encoding="utf-8"?>
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:tools="http://schemas.android.com/tools"
     package="lib.kalu.safetools">
 
-    <provider
-        android:name="lib.kalu.safetools.SafeToolsContextProvider"
-        android:authorities="${applicationId}.safetools.contextprovider"
-        android:exported="false"
-        tools:ignore="WrongManifestParent" />
+    <application android:allowBackup="false">
+
+        <provider
+            android:name="lib.kalu.safetools.SafeToolsContextProvider"
+            android:authorities="${applicationId}.safetools.contextprovider"
+            android:exported="false" />
+
+    </application>
 
 </manifest>

@@ -1,12 +1,12 @@
-package lib.kalu.safetools;
+package lib.kalu.jnisafetools;
 
 import androidx.annotation.Keep;
 
 @Keep
-public final class JniUtils {
+public final class SafeTools {
 
     static {
-        System.loadLibrary("tools");
+        System.loadLibrary("safetools");
     }
 
     /**

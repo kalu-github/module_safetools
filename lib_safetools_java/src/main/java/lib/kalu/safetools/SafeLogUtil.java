@@ -4,11 +4,11 @@ import android.util.Log;
 
 import androidx.annotation.NonNull;
 
-public final class SafeLogUtil {
+final class SafeLogUtil {
 
     private static final String TAG = "moudle_safetools";
 
-    public static final void log(@NonNull String content) {
+    static final void log(@NonNull String content) {
 
         if (!BuildConfig.DEBUG)
             return;

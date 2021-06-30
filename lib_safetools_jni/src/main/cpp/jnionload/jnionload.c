@@ -16,7 +16,7 @@ JNIEXPORT JNICALL jint JNI_OnLoad(JavaVM *vm, void *reserved) {
     }
 
     // ToolUtil
-    jclass cipher_clazz = (*env)->FindClass(env, "lib/kalu/safetools/JniUtils");
+    jclass cipher_clazz = (*env)->FindClass(env, "lib/kalu/jnisafetools/SafeTools");
     static JNINativeMethod cipher_methods[] = {
             {"aesDecode",      "(Ljava/lang/String;)Ljava/lang/String;",     JNI_OnLoad_AesDecode},
             {"aesDecodeMult",  "(Ljava/lang/String;ZZZZ)Ljava/lang/String;", JNI_OnLoad_AesDecodeMult},

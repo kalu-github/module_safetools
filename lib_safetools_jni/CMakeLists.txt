@@ -17,7 +17,7 @@ include_directories(
 
 add_library(
         # Sets the name of the library.
-        tools
+        safetools
 
         # Sets the library as a shared library.
         SHARED
@@ -71,7 +71,7 @@ find_library( # Sets the name of the path variable.
 
 target_link_libraries(
         # custom
-        tools
+        safetools
 
         # included in the NDK.
         ${log-lib}

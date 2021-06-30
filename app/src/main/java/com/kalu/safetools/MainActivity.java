@@ -1,4 +1,4 @@
-package com.kalu.jnitools;
+package com.kalu.safetools;
 
 import android.os.Bundle;
 import android.text.TextUtils;
@@ -9,7 +9,7 @@ import android.widget.Toast;
 import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
 
-import lib.kalu.safetools.JniUtils;
+import lib.kalu.jnisafetools.SafeTools;
 
 public class MainActivity extends AppCompatActivity {
 
@@ -17,6 +17,9 @@ public class MainActivity extends AppCompatActivity {
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
+
+        boolean checkSafe = lib.kalu.safetools.SafeTools.checkSafe();
+        Toast.makeText(getApplicationContext(), String.valueOf(checkSafe), Toast.LENGTH_SHORT).show();
 
 //        new Thread(new Runnable() {
 //
@@ -53,7 +56,7 @@ public class MainActivity extends AppCompatActivity {
                 if (TextUtils.isEmpty(text)) {
                     Toast.makeText(getApplicationContext(), "请输入加密信息", Toast.LENGTH_SHORT).show();
                 } else {
-                    String aesEncode = JniUtils.aesEncodeMult(String.valueOf(text), true, true, true, true);
+                    String aesEncode = SafeTools.aesEncodeMult(String.valueOf(text), true, true, true, true);
                     TextView inputs = findViewById(R.id.main_inputs);
                     inputs.setText(aesEncode);
                 }
@@ -71,7 +74,7 @@ public class MainActivity extends AppCompatActivity {
                 if (TextUtils.isEmpty(text)) {
                     Toast.makeText(getApplicationContext(), "请输入加密信息", Toast.LENGTH_SHORT).show();
                 } else {
-                    String aesDecode = JniUtils.aesDecodeMult(String.valueOf(text), true, true, true, true);
+                    String aesDecode = SafeTools.aesDecodeMult(String.valueOf(text), true, true, true, true);
                     TextView outputs = findViewById(R.id.main_outputs);
                     outputs.setText(aesDecode);
                 }
@@ -99,7 +102,7 @@ public class MainActivity extends AppCompatActivity {
             @Override
             public void onClick(View v) {
 
-                boolean b = JniUtils.checkXposed();
+                boolean b = SafeTools.checkXposed();
                 Toast.makeText(getApplicationContext(), b + "", Toast.LENGTH_SHORT).show();
             }
         });
@@ -109,7 +112,7 @@ public class MainActivity extends AppCompatActivity {
             @Override
             public void onClick(View v) {
 
-                JniUtils.checkSignature();
+                SafeTools.checkSignature();
             }
         });
 
@@ -123,7 +126,7 @@ public class MainActivity extends AppCompatActivity {
                     @Override
                     public void run() {
 
-                        JniUtils.checkSignature();
+                        SafeTools.checkSignature();
 
                     }
                 }).start();

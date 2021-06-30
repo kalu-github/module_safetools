@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
-    package="com.kalu.jnitools"
+    package="com.kalu.safetools"
     android:installLocation="auto">
 
     <application
@@ -19,7 +19,7 @@
         tools:replace="android:allowBackup">
 
         <activity
-            android:name="com.kalu.jnitools.MainActivity"
+            android:name="com.kalu.safetools.MainActivity"
             android:configChanges="orientation|screenSize|keyboardHidden|keyboard|uiMode"
             android:exported="true">
             <intent-filter>
