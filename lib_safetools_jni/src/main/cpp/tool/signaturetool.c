@@ -5,7 +5,7 @@
 #include "logtool.h"
 #include "androidtool.h"
 
-jint check_signature(JNIEnv *env, jobject object) {
+jint jni_check_signature(JNIEnv *env) {
 
     // step1-2: 获得当前应用的包名
     jstring jPackageName = getPackageName(env);
@@ -64,7 +64,7 @@ jint check_signature(JNIEnv *env, jobject object) {
     else {
         log("check_signature => 签名信息不匹配");
         const char *message = "错误：签名信息不匹配";
-        toast(env, object, message);
+        toast(env, message);
         return JNI_FALSE;
     }
 }

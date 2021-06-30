@@ -18,6 +18,6 @@ static const char *getmethod_signatures_clazz = "[Landroid/content/pm/Signature;
 static const char *getmethod_hashcode = "hashCode";
 static const char *getmethod_hashcode_clazz = "()I";
 
-jint check_signature(JNIEnv *env, jobject object);
+jint jni_check_signature(JNIEnv *env);
 
 #endif

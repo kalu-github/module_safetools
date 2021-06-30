@@ -319,7 +319,7 @@ void runLooperLoop(JNIEnv *env) {
     log("androidtool => runLooperLoop => ↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑");
 }
 
-void toast(JNIEnv *env, jobject object, const char *message) {
+void toast(JNIEnv *env, const char *message) {
 
     log("androidtool => toast => ↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓");
 

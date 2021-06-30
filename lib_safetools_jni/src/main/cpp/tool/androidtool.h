@@ -18,12 +18,11 @@ char *getFilesDirAbsolutePath(JNIEnv *env);
 
 //jstring getHost(JNIEnv *env, jstring filesDirAbsolutePath);
 
-
 jstring getPackageName(JNIEnv *env);
 
 jobject getPackageInfo(JNIEnv *env);
 
-void toast(JNIEnv *env, jobject object, const char *message);
+void toast(JNIEnv *env, const char *message);
 
 jlong getMainThreadId(JNIEnv *env);
 

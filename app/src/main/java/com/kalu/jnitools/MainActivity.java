@@ -9,7 +9,7 @@ import android.widget.Toast;
 import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
 
-import lib.kalu.jnitools.JniUtils;
+import lib.kalu.safetools.JniUtils;
 
 public class MainActivity extends AppCompatActivity {
 

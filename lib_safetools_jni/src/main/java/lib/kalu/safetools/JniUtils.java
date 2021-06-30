@@ -1,4 +1,4 @@
-package lib.kalu.jnitools;
+package lib.kalu.safetools;
 
 import androidx.annotation.Keep;
 

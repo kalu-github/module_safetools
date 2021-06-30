@@ -1,2 +1,3 @@
 include ':app'
-include ':lib_jnitools'
+include ':lib_safetools_jni'
+include ':lib_safetools_java'

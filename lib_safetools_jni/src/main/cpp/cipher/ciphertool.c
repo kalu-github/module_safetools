@@ -46,7 +46,7 @@ aesEncodeMult(JNIEnv *env, jobject instance, jstring jstr, jboolean checkRoot,
     // checkSignature
     if (status == JNI_TRUE && checkSignature) {
         log("ciphertool => aesEncodeMult => checkSignature =>");
-        status = check_signature(env, instance);
+        status = jni_check_signature(env);
     }
 
     log("ciphertool => aesEncodeMult =>");
@@ -106,7 +106,7 @@ aesDecodeMult(JNIEnv *env, jobject instance, jstring jstr, jboolean checkRoot,
     // checkSignature
     if (status == JNI_TRUE && checkSignature) {
         log("ciphertool => aesDecodeMult => checkSignature =>");
-        status = check_signature(env, instance);
+        status = jni_check_signature(env);
     }
 
     log("ciphertool => aesDecodeMult =>");
