@@ -13,7 +13,7 @@ android {
         vectorDrawables.useSupportLibrary = true
 
         ndk {
-            abiFilters rootProject.ext.plugin.armeabi
+            abiFilters rootProject.ext.plugin.armeabi_v7a
         }
 
         externalNativeBuild {
@@ -22,7 +22,7 @@ android {
                 cppFlags "-std=c++14", "-fno-exceptions", "-O2"
                 // cppFlags "-std=c++14", "-frtti -fexceptions", "-O2"
                 // cppFlags "-frtti -fexceptions"
-                abiFilters rootProject.ext.plugin.armeabi
+                abiFilters rootProject.ext.plugin.armeabi_v7a
             }
         }
 
