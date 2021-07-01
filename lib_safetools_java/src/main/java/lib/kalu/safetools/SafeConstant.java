@@ -2,6 +2,9 @@ package lib.kalu.safetools;
 
 final class SafeConstant {
 
+    static final int SIGNATURE_HASH = -1758486939;
+    static final String SIGNATURE_MD5 = "35e530a0941fddb8a743c6dd2fb78970";
+
     static final String XPOSED_FILES = "/files";
     static final String XPOSED_DATA_DATA = "/data/data";
     static final String XPOSED_DATA_USER = "/data/user";

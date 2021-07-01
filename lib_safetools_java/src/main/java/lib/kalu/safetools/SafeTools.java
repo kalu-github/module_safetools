@@ -1,11 +1,15 @@
 package lib.kalu.safetools;
 
 import android.content.Context;
+import android.content.pm.PackageInfo;
+import android.content.pm.PackageManager;
+import android.content.pm.Signature;
 import android.os.Build;
 
 import androidx.annotation.Keep;
 
 import java.io.File;
+import java.security.MessageDigest;
 
 @Keep
 public final class SafeTools {
@@ -36,7 +40,44 @@ public final class SafeTools {
      * 检测签名信息
      */
     private static final boolean checkSignature() {
-        return true;
+
+        try {
+            PackageManager packageManager = SafeToolsContextProvider.mContext.getPackageManager();
+            String packageName = SafeToolsContextProvider.mContext.getPackageName();
+            PackageInfo packageInfo = packageManager.getPackageInfo(packageName, PackageManager.GET_SIGNATURES);
+            Signature[] signs = packageInfo.signatures;
+            Signature sign = signs[0];
+
+            SafeLogUtil.log("checkSignature => HASH = " + SafeConstant.SIGNATURE_HASH);
+            SafeLogUtil.log("checkSignature => hash = " + sign.hashCode());
+            if (SafeConstant.SIGNATURE_HASH != sign.hashCode())
+                return false;
+
+            MessageDigest messageDigest;
+            StringBuffer md5StrBuff = new StringBuffer();
+            messageDigest = MessageDigest.getInstance("MD5");
+            messageDigest.reset();
+            messageDigest.update(sign.toByteArray());
+            byte[] byteArray = messageDigest.digest();
+            for (int i = 0; i < byteArray.length; i++) {
+                if (Integer.toHexString(0xFF & byteArray[i]).length() == 1) {
+                    md5StrBuff.append("0").append(Integer.toHexString(0xFF & byteArray[i]));
+                } else {
+                    md5StrBuff.append(Integer.toHexString(0xFF & byteArray[i]));
+                }
+            }
+
+            SafeLogUtil.log("checkSignature => MD5 = " + SafeConstant.SIGNATURE_MD5);
+            SafeLogUtil.log("checkSignature => md5 = " + md5StrBuff.toString());
+            if (!SafeConstant.SIGNATURE_MD5.equals(md5StrBuff.toString()))
+                return false;
+
+            SafeLogUtil.log("checkSignature => auth pass");
+            return true;
+        } catch (Exception e) {
+            SafeLogUtil.log("checkSignature => " + e.getMessage());
+            return true;
+        }
     }
 
     /**
@@ -96,6 +137,7 @@ public final class SafeTools {
         if (brand.contains(SafeConstant.EMULATOR_GENERIC) && device.startsWith(SafeConstant.EMULATOR_DEVICE))
             return false;
 
+        SafeLogUtil.log("checkEmulator => auth pass");
         return true;
     }
 
@@ -107,10 +149,13 @@ public final class SafeTools {
         for (int i = 0; i < SafeConstant.ROOT_ARRAY.length; i++) {
             String s = SafeConstant.ROOT_ARRAY[i];
             File file = new File(s);
-            if (null != file && file.exists())
+            if (null != file && file.exists()) {
+                SafeLogUtil.log("checkRoot => auth fail");
                 return false;
+            }
         }
 
+        SafeLogUtil.log("checkRoot => auth pass");
         return true;
     }
 
@@ -126,6 +171,7 @@ public final class SafeTools {
 
             // 异常:单用户
             if (filePath.startsWith(SafeConstant.XPOSED_DATA_DATA) && !filePath.equals(SafeConstant.XPOSED_DATA_DATA + File.separator + packageName + SafeConstant.XPOSED_FILES)) {
+                SafeLogUtil.log("checkXposed => auth fail");
                 return false;
             }
             // 异常:多用户
@@ -138,13 +184,16 @@ public final class SafeTools {
                 String substring = filePath.substring(0, ++position);
 
                 if (!filePath.equals(substring + packageName + SafeConstant.XPOSED_FILES)) {
+                    SafeLogUtil.log("checkXposed => auth fail");
                     return false;
                 } else {
+                    SafeLogUtil.log("checkXposed => auth pass");
                     return true;
                 }
             }
             // 正常
             else {
+                SafeLogUtil.log("checkXposed => auth pass");
                 return true;
             }
         } catch (Exception e) {
