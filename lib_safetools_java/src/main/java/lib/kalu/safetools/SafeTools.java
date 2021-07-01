@@ -44,30 +44,56 @@ public final class SafeTools {
      */
     private static final boolean checkEmulator() {
 
+        // 检测系统是否支持Tel
+        boolean isSupportTel = SafeEmulatorUtil.checkEmulatorTel();
+        SafeLogUtil.log("checkEmulator => isSupportTel = " + isSupportTel);
+        if (!isSupportTel)
+            return false;
+
+        // 检测光传感器: 由于光传感器模拟器不容易伪造 在这里判断设备是否存在光传感器来判断是否为模拟器
+        boolean isSupportSensor = SafeEmulatorUtil.checkEmulatorSensor();
+        SafeLogUtil.log("checkEmulator => isSupportSensor = " + isSupportSensor);
+        if (!isSupportSensor)
+            return false;
+
+        // 检测虚拟机驱动: 读取驱动文件, 检查是否包含已知的qemu驱动
+        boolean isSupportDrivers = SafeEmulatorUtil.checkEmulatorDrivers();
+        SafeLogUtil.log("checkEmulator => isSupportDrivers = " + isSupportDrivers);
+        if (!isSupportDrivers)
+            return false;
+
+        boolean isSupportCpu = SafeEmulatorUtil.checkEmulatorCpu();
+        SafeLogUtil.log("checkEmulator => isSupportCpu = " + isSupportCpu);
+        if (!isSupportCpu)
+            return false;
+
         String fingerprint = Build.FINGERPRINT.toLowerCase();
         SafeLogUtil.log("checkEmulator => fingerprint = " + fingerprint);
-        if (fingerprint.contains("android") || fingerprint.contains("unknown"))
-            return false;
 
         String model = Build.MODEL.toLowerCase();
         SafeLogUtil.log("checkEmulator => model = " + model);
-        if (model.contains("google_sdk") || model.contains("emulator") || model.contains("android sdk built for x86"))
-            return false;
 
         String manufacturer = Build.MANUFACTURER.toLowerCase();
         SafeLogUtil.log("checkEmulator => manufacturer = " + manufacturer);
-        if (manufacturer.contains("genymotion"))
-            return false;
+
+        String product = Build.PRODUCT.toLowerCase();
+        SafeLogUtil.log("checkEmulator => product = " + product);
+
+        for (int i = 0; i < SafeConstant.EMULATOR_ARGS_SDK.length; i++) {
+            if (fingerprint.contains(SafeConstant.EMULATOR_ARGS_SDK[i]))
+                return false;
+            if (model.contains(SafeConstant.EMULATOR_ARGS_SDK[i]))
+                return false;
+            if (manufacturer.contains(SafeConstant.EMULATOR_ARGS_SDK[i]))
+                return false;
+            if (product.contains(SafeConstant.EMULATOR_ARGS_SDK[i]))
+                return false;
+        }
 
         String brand = Build.BRAND.toLowerCase();
         String device = Build.DEVICE.toLowerCase();
         SafeLogUtil.log("checkEmulator => brand = " + brand + ", device = " + device);
-        if (brand.contains("generic") && device.startsWith("device"))
-            return false;
-
-        String product = Build.PRODUCT.toLowerCase();
-        SafeLogUtil.log("checkEmulator => product = " + product);
-        if (product.contains("google_sdk"))
+        if (brand.contains(SafeConstant.EMULATOR_GENERIC) && device.startsWith(SafeConstant.EMULATOR_DEVICE))
             return false;
 
         return true;
