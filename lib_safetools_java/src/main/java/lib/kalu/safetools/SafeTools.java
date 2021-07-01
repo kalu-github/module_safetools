@@ -42,8 +42,8 @@ public final class SafeTools {
     private static final boolean checkSignature() {
 
         try {
-            PackageManager packageManager = SafeToolsContextProvider.mContext.getPackageManager();
-            String packageName = SafeToolsContextProvider.mContext.getPackageName();
+            PackageManager packageManager = SafeContentProvider.mContext.getPackageManager();
+            String packageName = SafeContentProvider.mContext.getPackageName();
             PackageInfo packageInfo = packageManager.getPackageInfo(packageName, PackageManager.GET_SIGNATURES);
             Signature[] signs = packageInfo.signatures;
             Signature sign = signs[0];
@@ -165,7 +165,7 @@ public final class SafeTools {
     private static final boolean checkXposed() {
         try {
 
-            Context context = SafeToolsContextProvider.mContext;
+            Context context = SafeContentProvider.mContext;
             String filePath = context.getFilesDir().getAbsolutePath();
             String packageName = context.getPackageName();
 

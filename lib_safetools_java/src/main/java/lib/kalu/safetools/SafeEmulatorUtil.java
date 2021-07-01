@@ -15,12 +15,12 @@ import static android.content.Context.SENSOR_SERVICE;
 final class SafeEmulatorUtil {
 
     static final boolean checkEmulatorTel() {
-        PackageManager packageManager = SafeToolsContextProvider.mContext.getPackageManager();
+        PackageManager packageManager = SafeContentProvider.mContext.getPackageManager();
         return packageManager.hasSystemFeature(PackageManager.FEATURE_TELEPHONY);
     }
 
     static final boolean checkEmulatorSensor() {
-        SensorManager sensorManager = (SensorManager) SafeToolsContextProvider.mContext.getSystemService(SENSOR_SERVICE);
+        SensorManager sensorManager = (SensorManager) SafeContentProvider.mContext.getSystemService(SENSOR_SERVICE);
         Sensor sensor = sensorManager.getDefaultSensor(Sensor.TYPE_LIGHT);
         return (null != sensor);
     }

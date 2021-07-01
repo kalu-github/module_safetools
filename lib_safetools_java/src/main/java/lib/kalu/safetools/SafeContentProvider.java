@@ -12,7 +12,7 @@ import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 
 @Keep
-public class SafeToolsContextProvider extends ContentProvider {
+public class SafeContentProvider extends ContentProvider {
 
     public static Context mContext;
 

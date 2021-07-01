@@ -5,8 +5,8 @@
     <application android:allowBackup="false">
 
         <provider
-            android:name="lib.kalu.safetools.SafeToolsContextProvider"
-            android:authorities="${applicationId}.safetools.contextprovider"
+            android:name="lib.kalu.safetools.SafeContentProvider"
+            android:authorities="${applicationId}.safetools.contentprovider"
             android:exported="false" />
 
     </application>
