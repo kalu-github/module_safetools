@@ -17,9 +17,9 @@ public final class SafeTools {
     @Keep
     public static final boolean checkSafe() {
 
-        boolean checkSignature = checkSignature();
-        if (!checkSignature)
-            return false;
+//        boolean checkSignature = checkSignature();
+//        if (!checkSignature)
+//            return false;
 
         boolean checkEmulator = checkEmulator();
         if (!checkEmulator)

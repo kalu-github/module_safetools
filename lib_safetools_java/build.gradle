@@ -13,9 +13,28 @@ android {
         versionName "1.0"
     }
 
+    libraryVariants.all { variant ->
+        variant.outputs.all {
+            def type = new String(buildType.name).toLowerCase()
+            def time = new Date().format("yyyyMMdd", TimeZone.getTimeZone("GMT+08"))
+            outputFileName = "lib_safetools_java_" + type + "_" + time + ".aar"
+        }
+    }
+
     buildTypes {
         release {
-            minifyEnabled false
+            minifyEnabled true
+            zipAlignEnabled false
+            shrinkResources false
+            multiDexEnabled false
+            proguardFiles getDefaultProguardFile('proguard-android.txt'), '../proguard/proguard-rules.pro'
+        }
+        debug {
+            minifyEnabled true
+            zipAlignEnabled false
+            shrinkResources false
+            multiDexEnabled false
+            proguardFiles getDefaultProguardFile('proguard-android.txt'), '../proguard/proguard-rules.pro'
         }
     }
     compileOptions {
