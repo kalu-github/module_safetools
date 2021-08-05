@@ -5,6 +5,7 @@ import android.util.Base64;
 import androidx.annotation.NonNull;
 
 import java.io.ByteArrayOutputStream;
+import java.nio.charset.Charset;
 import java.nio.charset.StandardCharsets;
 import java.security.KeyFactory;
 import java.security.KeyPair;
@@ -31,6 +32,16 @@ public class RsaTools {
      * RSA最大解密密文大小
      */
     private static final int MAX_DECRYPT_BLOCK = 128;
+
+    /**
+     * Base64-Flag
+     */
+    private static final int BASE64_FLAG = Base64.NO_WRAP;
+
+    /**
+     * UTF-8
+     */
+    private static final Charset UTF_8 =  StandardCharsets.UTF_8;
 
     private static final String RSA = "RSA";
     private static final String KEY_VERIFY = "MD5withRSA";
@@ -59,7 +70,7 @@ public class RsaTools {
             signature.initVerify(publicKey);
             signature.update(data.getBytes());
             byte[] bytes = sign.getBytes();
-            byte[] decodeBytes = Base64.decode(bytes, Base64.NO_WRAP);
+            byte[] decodeBytes = Base64.decode(bytes, BASE64_FLAG);
             return signature.verify(decodeBytes);
         } catch (Exception e) {
             return false;
@@ -89,8 +100,8 @@ public class RsaTools {
             signature.initSign(privateKey);
             signature.update(data.getBytes());
             byte[] bytes = signature.sign();
-            byte[] decodeBytes = Base64.decode(bytes, Base64.NO_WRAP);
-            return new String(decodeBytes, StandardCharsets.UTF_8);
+            byte[] decodeBytes = Base64.decode(bytes, BASE64_FLAG);
+            return new String(decodeBytes, UTF_8);
         } catch (Exception e) {
             return null;
         }
@@ -139,8 +150,8 @@ public class RsaTools {
             out.close();
             // 获取加密内容使用base64进行编码,并以UTF-8为标准转化成字符串
             // 加密后的字符串
-            byte[] encodeBytes = Base64.encode(encryptedData, Base64.NO_WRAP);
-            String s = new String(encodeBytes, StandardCharsets.UTF_8);
+            byte[] encodeBytes = Base64.encode(encryptedData, BASE64_FLAG);
+            String s = new String(encodeBytes, UTF_8);
             return s;
         } catch (Exception e) {
             return null;
@@ -168,7 +179,7 @@ public class RsaTools {
         try {
             Cipher cipher = Cipher.getInstance(RSA);
             cipher.init(Cipher.DECRYPT_MODE, privateKey);
-            byte[] dataBytes = Base64.decode(data, Base64.NO_WRAP);
+            byte[] dataBytes = Base64.decode(data, BASE64_FLAG);
             int inputLen = dataBytes.length;
             ByteArrayOutputStream out = new ByteArrayOutputStream();
             int offset = 0;
@@ -188,7 +199,7 @@ public class RsaTools {
             byte[] decryptedData = out.toByteArray();
             out.close();
             // 解密后的内容
-            return new String(decryptedData, StandardCharsets.UTF_8);
+            return new String(decryptedData, UTF_8);
         } catch (Exception e) {
             return null;
         }
@@ -198,8 +209,8 @@ public class RsaTools {
 
     private static byte[] getBytes(@NonNull String key) {
         try {
-            byte[] bytes = key.getBytes(StandardCharsets.UTF_8);
-            byte[] keyBytes = Base64.decode(bytes, Base64.NO_WRAP);
+            byte[] bytes = key.getBytes(UTF_8);
+            byte[] keyBytes = Base64.decode(bytes, BASE64_FLAG);
             return keyBytes;
         } catch (Exception e) {
             return null;
