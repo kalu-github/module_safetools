@@ -35,14 +35,14 @@ public class RsaTools {
     private static final String RSA = "RSA";
     private static final String KEY_VERIFY = "MD5withRSA";
 
-    public static boolean verify(@NonNull String data, @NonNull String key, @NonNull String sign) {
-        byte[] keyBytes = getBytes(key);
+    public static boolean verify(@NonNull String data, @NonNull String publicKey, @NonNull String sign) {
+        byte[] keyBytes = getBytes(publicKey);
         return verify(data, keyBytes, sign);
     }
 
-    public static boolean verify(@NonNull String data, @NonNull byte[] keyBytes, @NonNull String sign) {
-        PublicKey publicKey = generatePublic(keyBytes);
-        return verify(data, publicKey, sign);
+    public static boolean verify(@NonNull String data, @NonNull byte[] publicKey, @NonNull String sign) {
+        PublicKey pubKey = generatePublic(publicKey);
+        return verify(data, pubKey, sign);
     }
 
     /**
@@ -68,14 +68,14 @@ public class RsaTools {
 
     /********************************/
 
-    public static String sign(@NonNull String data, @NonNull String key) {
-        byte[] keyBytes = getBytes(key);
+    public static String sign(@NonNull String data, @NonNull String privateKey) {
+        byte[] keyBytes = getBytes(privateKey);
         return sign(data, keyBytes);
     }
 
-    public static String sign(@NonNull String data, @NonNull byte[] keyBytes) {
-        PrivateKey privateKey = generatePrivate(keyBytes);
-        return sign(data, privateKey);
+    public static String sign(@NonNull String data, @NonNull byte[] privateKey) {
+        PrivateKey priKey = generatePrivate(privateKey);
+        return sign(data, priKey);
     }
 
     /**
@@ -148,6 +148,16 @@ public class RsaTools {
     }
 
     /********************************/
+
+    public static String decrypt(@NonNull String data, @NonNull String privateKey) {
+        byte[] bytes = getBytes(privateKey);
+        return decrypt(data, bytes);
+    }
+
+    public static String decrypt(@NonNull String data, @NonNull byte[] privateKey) {
+        PrivateKey priKey = generatePrivate(privateKey);
+        return decrypt(data, priKey);
+    }
 
     /**
      * 解密
