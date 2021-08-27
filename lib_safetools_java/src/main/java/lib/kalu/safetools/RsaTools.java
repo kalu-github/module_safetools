@@ -1,11 +1,10 @@
 package lib.kalu.safetools;
 
-import android.util.Base64;
-
 import androidx.annotation.NonNull;
+import androidx.annotation.RawRes;
 
-import java.io.ByteArrayOutputStream;
-import java.nio.charset.Charset;
+import java.io.BufferedReader;
+import java.io.InputStreamReader;
 import java.nio.charset.StandardCharsets;
 import java.security.KeyFactory;
 import java.security.KeyPair;
@@ -15,6 +14,10 @@ import java.security.PublicKey;
 import java.security.Signature;
 import java.security.spec.PKCS8EncodedKeySpec;
 import java.security.spec.X509EncodedKeySpec;
+import java.util.ArrayList;
+import java.util.Collections;
+import java.util.Iterator;
+import java.util.Map;
 
 import javax.crypto.Cipher;
 
@@ -23,28 +26,9 @@ import javax.crypto.Cipher;
  */
 public class RsaTools {
 
-    /**
-     * RSA最大加密明文大小
-     */
-    private static final int MAX_ENCRYPT_BLOCK = 117;
-
-    /**
-     * RSA最大解密密文大小
-     */
-    private static final int MAX_DECRYPT_BLOCK = 128;
-
-    /**
-     * Base64-Flag
-     */
-    private static final int BASE64_FLAG = Base64.NO_WRAP;
-
-    /**
-     * UTF-8
-     */
-    private static final Charset UTF_8 =  StandardCharsets.UTF_8;
-
-    private static final String RSA = "RSA";
-    private static final String KEY_VERIFY = "MD5withRSA";
+    private final static String KEYFACTORY_ALGORITHM = "RSA";
+    private final static String SIGNATURE_ALGORITHM = "Sha256WithRSA";
+    private final static String CIPHER_TRANSFORMATION = "RSA/ECB/PKCS1Padding";
 
     public static boolean verify(@NonNull String data, @NonNull String publicKey, @NonNull String sign) {
         byte[] keyBytes = getBytes(publicKey);
@@ -66,11 +50,18 @@ public class RsaTools {
      */
     public static boolean verify(@NonNull String data, @NonNull PublicKey publicKey, @NonNull String sign) {
         try {
-            Signature signature = Signature.getInstance(KEY_VERIFY);
+            Signature signature = Signature.getInstance(SIGNATURE_ALGORITHM);
             signature.initVerify(publicKey);
             signature.update(data.getBytes());
             byte[] bytes = sign.getBytes();
-            byte[] decodeBytes = Base64.decode(bytes, BASE64_FLAG);
+            byte[] decodeBytes;
+            if (android.os.Build.VERSION.SDK_INT >= android.os.Build.VERSION_CODES.O) {
+                decodeBytes = java.util.Base64.getDecoder().decode(bytes);
+//                LogUtil.e("testRRR", "jdk");
+            } else {
+//                LogUtil.e("testRRR", "android");
+                decodeBytes = android.util.Base64.decode(bytes, android.util.Base64.DEFAULT);
+            }
             return signature.verify(decodeBytes);
         } catch (Exception e) {
             return false;
@@ -96,13 +87,17 @@ public class RsaTools {
      */
     public static String sign(@NonNull String data, @NonNull PrivateKey privateKey) {
         try {
-            Signature signature = Signature.getInstance(KEY_VERIFY);
+            Signature signature = Signature.getInstance(SIGNATURE_ALGORITHM);
             signature.initSign(privateKey);
             signature.update(data.getBytes());
             byte[] bytes = signature.sign();
-            byte[] decodeBytes = Base64.decode(bytes, BASE64_FLAG);
-            return new String(decodeBytes, UTF_8);
+            if (android.os.Build.VERSION.SDK_INT >= android.os.Build.VERSION_CODES.O) {
+                return java.util.Base64.getEncoder().encodeToString(bytes);
+            } else {
+                return android.util.Base64.encodeToString(bytes, android.util.Base64.DEFAULT).replaceAll("\n", "");
+            }
         } catch (Exception e) {
+            SafeLogUtil.log(e.getMessage());
             return null;
         }
     }
@@ -128,32 +123,16 @@ public class RsaTools {
      */
     public static String encrypt(@NonNull String data, @NonNull PublicKey publicKey) {
         try {
-            Cipher cipher = Cipher.getInstance(RSA);
+            Cipher cipher = Cipher.getInstance(CIPHER_TRANSFORMATION);
             cipher.init(Cipher.ENCRYPT_MODE, publicKey);
-            int inputLen = data.getBytes().length;
-            ByteArrayOutputStream out = new ByteArrayOutputStream();
-            int offset = 0;
-            byte[] cache;
-            int i = 0;
-            // 对数据分段加密
-            while (inputLen - offset > 0) {
-                if (inputLen - offset > MAX_ENCRYPT_BLOCK) {
-                    cache = cipher.doFinal(data.getBytes(), offset, MAX_ENCRYPT_BLOCK);
-                } else {
-                    cache = cipher.doFinal(data.getBytes(), offset, inputLen - offset);
-                }
-                out.write(cache, 0, cache.length);
-                i++;
-                offset = i * MAX_ENCRYPT_BLOCK;
+            byte[] bytes = cipher.doFinal(data.getBytes(StandardCharsets.UTF_8));
+            if (android.os.Build.VERSION.SDK_INT >= android.os.Build.VERSION_CODES.O) {
+                return java.util.Base64.getEncoder().encodeToString(bytes);
+            } else {
+                return android.util.Base64.encodeToString(bytes, android.util.Base64.DEFAULT).replaceAll("\n", "");
             }
-            byte[] encryptedData = out.toByteArray();
-            out.close();
-            // 获取加密内容使用base64进行编码,并以UTF-8为标准转化成字符串
-            // 加密后的字符串
-            byte[] encodeBytes = Base64.encode(encryptedData, BASE64_FLAG);
-            String s = new String(encodeBytes, UTF_8);
-            return s;
         } catch (Exception e) {
+            SafeLogUtil.log(e.getMessage());
             return null;
         }
     }
@@ -177,30 +156,19 @@ public class RsaTools {
      */
     public static String decrypt(@NonNull String data, @NonNull PrivateKey privateKey) {
         try {
-            Cipher cipher = Cipher.getInstance(RSA);
+            Cipher cipher = Cipher.getInstance(CIPHER_TRANSFORMATION);
             cipher.init(Cipher.DECRYPT_MODE, privateKey);
-            byte[] dataBytes = Base64.decode(data, BASE64_FLAG);
-            int inputLen = dataBytes.length;
-            ByteArrayOutputStream out = new ByteArrayOutputStream();
-            int offset = 0;
-            byte[] cache;
-            int i = 0;
-            // 对数据分段解密
-            while (inputLen - offset > 0) {
-                if (inputLen - offset > MAX_DECRYPT_BLOCK) {
-                    cache = cipher.doFinal(dataBytes, offset, MAX_DECRYPT_BLOCK);
-                } else {
-                    cache = cipher.doFinal(dataBytes, offset, inputLen - offset);
-                }
-                out.write(cache, 0, cache.length);
-                i++;
-                offset = i * MAX_DECRYPT_BLOCK;
+            byte[] decode;
+            byte[] bytes = data.getBytes(StandardCharsets.UTF_8);
+            if (android.os.Build.VERSION.SDK_INT >= android.os.Build.VERSION_CODES.O) {
+                decode = java.util.Base64.getDecoder().decode(bytes);
+            } else {
+                decode = android.util.Base64.decode(bytes, android.util.Base64.DEFAULT);
             }
-            byte[] decryptedData = out.toByteArray();
-            out.close();
-            // 解密后的内容
-            return new String(decryptedData, UTF_8);
+            byte[] doFinal = cipher.doFinal(decode);
+            return new String(doFinal, StandardCharsets.UTF_8).replaceAll("\n", "");
         } catch (Exception e) {
+            SafeLogUtil.log(e.getMessage());
             return null;
         }
     }
@@ -209,10 +177,14 @@ public class RsaTools {
 
     private static byte[] getBytes(@NonNull String key) {
         try {
-            byte[] bytes = key.getBytes(UTF_8);
-            byte[] keyBytes = Base64.decode(bytes, BASE64_FLAG);
-            return keyBytes;
+            byte[] bytes = key.getBytes(StandardCharsets.UTF_8);
+            if (android.os.Build.VERSION.SDK_INT >= android.os.Build.VERSION_CODES.O) {
+                return java.util.Base64.getDecoder().decode(bytes);
+            } else {
+                return android.util.Base64.decode(bytes, android.util.Base64.DEFAULT);
+            }
         } catch (Exception e) {
+            SafeLogUtil.log(e.getMessage());
             return null;
         }
     }
@@ -220,10 +192,11 @@ public class RsaTools {
     private static PublicKey generatePublic(@NonNull byte[] keyBytes) {
         try {
             X509EncodedKeySpec keySpec = new X509EncodedKeySpec(keyBytes);
-            KeyFactory keyFactory = KeyFactory.getInstance(RSA);
+            KeyFactory keyFactory = KeyFactory.getInstance(KEYFACTORY_ALGORITHM);
             PublicKey pubKey = keyFactory.generatePublic(keySpec);
             return pubKey;
         } catch (Exception e) {
+            SafeLogUtil.log(e.getMessage());
             return null;
         }
     }
@@ -231,10 +204,11 @@ public class RsaTools {
     private static PrivateKey generatePrivate(@NonNull byte[] keyBytes) {
         try {
             PKCS8EncodedKeySpec keySpec = new PKCS8EncodedKeySpec(keyBytes);
-            KeyFactory keyFactory = KeyFactory.getInstance(RSA);
+            KeyFactory keyFactory = KeyFactory.getInstance(KEYFACTORY_ALGORITHM);
             PrivateKey priKey = keyFactory.generatePrivate(keySpec);
             return priKey;
         } catch (Exception e) {
+            SafeLogUtil.log(e.getMessage());
             return null;
         }
     }
@@ -246,12 +220,121 @@ public class RsaTools {
      */
     public static KeyPair getKeyPair() {
         try {
-            KeyPairGenerator generator = KeyPairGenerator.getInstance(RSA);
+            KeyPairGenerator generator = KeyPairGenerator.getInstance(KEYFACTORY_ALGORITHM);
             generator.initialize(1024);
             KeyPair keyPair = generator.generateKeyPair();
             return keyPair;
         } catch (Exception e) {
+            SafeLogUtil.log(e.getMessage());
             return null;
         }
+    }
+
+    public static String getKey(@RawRes int id) {
+        try {
+            InputStreamReader inputReader = new InputStreamReader(SafeContentProvider.mContext.getResources().openRawResource(id), StandardCharsets.UTF_8);
+            BufferedReader bufReader = new BufferedReader(inputReader);
+            String info;
+            StringBuilder builder = new StringBuilder();
+            while ((info = bufReader.readLine()) != null) {
+                builder.append(info);
+            }
+            return builder.toString();
+        } catch (Exception e) {
+            SafeLogUtil.log(e.getMessage());
+            return null;
+        }
+    }
+
+    public static String createSign(@NonNull Map<CharSequence, Object> map) {
+        return createSign(map, false);
+    }
+
+    public static String createSign(@NonNull Map<CharSequence, Object> map, boolean isFromH5) {
+
+        // 验签
+        ArrayList<String> list = new ArrayList<>();
+        Iterator<Map.Entry<CharSequence, Object>> iterator = map.entrySet().iterator();
+        while (iterator.hasNext()) {
+            Map.Entry<CharSequence, Object> next = iterator.next();
+            if (null != next.getKey() && next.getKey().length() > 0 && null != next.getValue() && next.getValue().toString().length() > 0) {
+                list.add(next.getKey().toString());
+            }
+        }
+        Collections.sort(list);
+
+        StringBuilder builder = new StringBuilder();
+        for (int i = 0; i < list.size(); i++) {
+            CharSequence key = list.get(i);
+            if (null == key || key.length() == 0)
+                continue;
+            if (!isFromH5 && "sessionId".equals(key))
+                continue;
+            if (!isFromH5 && "key".equals(key))
+                continue;
+            if ("text".equals(key))
+                continue;
+            Object value = map.get(key);
+            if (null == value)
+                continue;
+            String valueOf = String.valueOf(value);
+            if (valueOf.length() == 0)
+                continue;
+//            if (value instanceof JsonNull)
+//                continue;
+//            if (value instanceof JsonElement)
+//                continue;
+//            if (value instanceof JsonObject)
+//                continue;
+//            if (value instanceof JsonArray)
+//                continue;
+            if (valueOf.trim().startsWith("{") && valueOf.trim().endsWith("}"))
+                continue;
+            if (valueOf.trim().startsWith("[") && valueOf.trim().endsWith("]"))
+                continue;
+
+            if (builder.length() != 0) {
+                builder.append("&");
+            }
+            if (value instanceof Boolean) {
+                builder.append(key + (((Boolean) value) ? "=1" : "=0"));
+            } else {
+                builder.append(key + "=" + value);
+            }
+//            try {
+//                String newString = new GsonBuilder().serializeNulls().disableHtmlEscaping().create().toJson(value);
+//                StringBuilder stringBuilder = new StringBuilder();
+//                for (int j = 0; j < newString.length(); j++) {
+//                    char charAt = newString.charAt(j);
+//                    if ('\"' == charAt)
+//                        continue;
+//                    if (':' == charAt) {
+//                        stringBuilder.append("=");
+//                    } else if (',' == charAt) {
+//                        stringBuilder.append(", ");
+//                    } else {
+//                        stringBuilder.append(charAt);
+//                    }
+//                }
+//                String toString = stringBuilder.toString();
+//                builder.append(key + "=" + toString);
+//            } catch (Exception e) {
+//                builder.append(key + "=" + value);
+//            }
+        }
+
+        //String toJson = new GsonBuilder().serializeNulls().disableHtmlEscaping().create().toJson(map);
+        //SafeLogUtil.log("sign_map = " + toJson);
+        String client_private_key = getKey(R.raw.client_private_key);
+        SafeLogUtil.log("client_private_key = " + client_private_key);
+        String sign_data = builder.toString();
+        SafeLogUtil.log( "sign_data = " + sign_data);
+        String sign = sign(sign_data, client_private_key);
+//        LogUtil.e("testRRR", "sign = " + sign);
+//        String client_public_key = getKey(R.raw.client_public_key);
+//        LogUtil.e("testRRR", "client_public_key = " + client_public_key);
+//        boolean sign_verify = RSAUtil.verify(sign_data, client_public_key, sign);
+//        LogUtil.e("testRRR", "sign_verify = " + sign_verify);
+        return sign;
     }
 }

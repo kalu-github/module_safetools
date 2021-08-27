@@ -91,11 +91,11 @@ public final class SafeTools {
         if (!isSupportTel)
             return false;
 
-        // 检测光传感器: 由于光传感器模拟器不容易伪造 在这里判断设备是否存在光传感器来判断是否为模拟器
-        boolean isSupportSensor = SafeEmulatorUtil.checkEmulatorSensor();
-        SafeLogUtil.log("checkEmulator => isSupportSensor = " + isSupportSensor);
-        if (!isSupportSensor)
-            return false;
+//        // 检测光传感器: 由于光传感器模拟器不容易伪造 在这里判断设备是否存在光传感器来判断是否为模拟器
+//        boolean isSupportSensor = SafeEmulatorUtil.checkEmulatorSensor();
+//        SafeLogUtil.log("checkEmulator => isSupportSensor = " + isSupportSensor);
+//        if (!isSupportSensor)
+//            return false;
 
         // 检测虚拟机驱动: 读取驱动文件, 检查是否包含已知的qemu驱动
         boolean isSupportDrivers = SafeEmulatorUtil.checkEmulatorDrivers();
