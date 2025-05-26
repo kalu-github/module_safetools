@@ -1,69 +1,37 @@
 buildscript {
 
-    // 编译: 2020-01-03
-    ext.support_gradle_version = '4.2.2'
-
-    // 核心: 2020-01-03
-    ext.support_activity_version = '1.1.0'
-    ext.support_fragment_version = '1.2.5'
-    ext.support_annotation_version = "1.1.0"
-    ext.support_appcompat_version = "1.1.0"
-
     repositories {
-        maven { url 'http://maven.aliyun.com/nexus/content/groups/public' }
-        maven { url "https://jitpack.io" }
-        maven { url 'https://dl.bintray.com/umsdk/release' }
-        jcenter()
+        maven { url 'https://maven.aliyun.com/repository/public' }
+        maven { url 'https://maven.aliyun.com/repository/google' }
         google()
+        mavenCentral()
     }
 
     dependencies {
-        classpath "com.android.tools.build:gradle:${support_gradle_version}"
+        classpath 'com.android.tools.build:gradle:8.0.2'
     }
 }
 
 allprojects {
 
     repositories {
-        maven { url 'http://maven.aliyun.com/nexus/content/groups/public' }
-        maven { url "https://jitpack.io" }
-        maven { url 'https://dl.bintray.com/umsdk/release' }
-        jcenter()
+        maven { url 'https://maven.aliyun.com/repository/public' }
+        maven { url 'https://maven.aliyun.com/repository/google' }
         google()
     }
 }
 
-ext {
+task clean(type: Delete) {
+    delete rootProject.buildDir
+}
 
-    // 常量
-    plugin = [
-            com_android_application: 'com.android.application',
-            com_android_library    : 'com.android.library',
-            andresguard            : 'AndResGuard',
-            java                   : 'java',
-            armeabi_v7a                : 'armeabi-v7a',
-            x86                    : 'x86',
-            fastclick              : 'android-aspectjx',
-    ]
+tasks.withType(JavaCompile) {
+    options.encoding = "UTF-8"
+}
 
-    // 版本
-    android = [
-            applicationId    : "com.kalu.safetools",
-            compileSdkVersion: 28,
-            buildToolsVersion: "28.0.3",
-            minSdkVersion    : 23, // 6.0+
-            targetSdkVersion : 28, // 28之后强制使用https, 否则报错, 或者networkSecurityConfig
-            versionCode      : 11,
-            versionName      : "2.0.0"
-    ]
-
-    // 依赖
-    dependencies = [
-
-            // 核心: 2020-01-03
-            "support_activity"  : "androidx.activity:activity:$support_activity_version",
-            "support_fragment"  : "androidx.fragment:fragment:$support_fragment_version",
-            "support_annotation": "androidx.annotation:annotation:$support_annotation_version",
-            "support_appcompat" : "androidx.appcompat:appcompat:$support_appcompat_version",
-    ]
+tasks.withType(Javadoc) {
+    options.addStringOption('Xdoclint:none', '-quiet')
+    options.addStringOption('encoding', 'UTF-8')
+    source = android.sourceSets.main.java.srcDirs
+    classpath += project.files(android.getBootClasspath().join(File.pathSeparator))
 }

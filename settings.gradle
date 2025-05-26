@@ -1,3 +1,4 @@
-include ':app'
-include ':lib_safetools_jni'
-include ':lib_safetools_java'
+//include ':app'
+include ':lib_tool'
+//include ':lib_safetools_jni'
+//include ':lib_safetools_java'

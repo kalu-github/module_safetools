@@ -1,16 +1,17 @@
 apply plugin: rootProject.ext.plugin.com_android_library
 
 android {
-    compileSdkVersion rootProject.ext.android.compileSdkVersion
-    buildToolsVersion rootProject.ext.android.buildToolsVersion
+
+    namespace 'lib.kalu.tool'
+    compileSdkVersion 30
+    buildToolsVersion "30.0.3"
 
     defaultConfig {
 
-        minSdkVersion rootProject.ext.android.minSdkVersion
-        targetSdkVersion rootProject.ext.android.targetSdkVersion
-        versionCode rootProject.ext.android.versionCode
-        versionName rootProject.ext.android.versionName
-        vectorDrawables.useSupportLibrary = true
+        minSdkVersion 23
+        targetSdkVersion 30
+        versionCode 1
+        versionName "1.0"
 
         ndk {
             abiFilters rootProject.ext.plugin.armeabi_v7a

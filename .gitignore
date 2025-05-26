@@ -6,3 +6,5 @@
 /lib_encryption/build/
 /lib_encryption/build/intermediates/javac/debug/classes/
 .idea
+/lib_tool/.cxx/
+/lib_tool/build/
