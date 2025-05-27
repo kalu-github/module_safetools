@@ -44,17 +44,10 @@ android {
     buildTypes {
         release {
             minifyEnabled true
-            zipAlignEnabled false
-            shrinkResources false
-            multiDexEnabled false
-            proguardFiles getDefaultProguardFile('proguard-android.txt'), '../proguard/proguard-rules.pro'
+            consumerProguardFiles("consumer-rules.pro")
+            proguardFiles("proguard-rules.pro", "consumer-rules.pro")
         }
         debug {
-            minifyEnabled true
-            zipAlignEnabled false
-            shrinkResources false
-            multiDexEnabled false
-            proguardFiles getDefaultProguardFile('proguard-android.txt'), '../proguard/proguard-rules.pro'
         }
     }
     compileOptions {

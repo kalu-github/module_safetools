@@ -13,12 +13,16 @@ jbyteArray JNI_OnLoad_Base64Decrypt(JNIEnv *env, jobject instance, jbyteArray js
 
 jbyteArray JNI_OnLoad_Base64Encrypt(JNIEnv *env, jobject instance, jbyteArray jstr);
 
-jbyteArray JNI_OnLoad_AesDecrypt(JNIEnv *env, jobject instance, jbyteArray data, jbyteArray key, jboolean useBase64);
-
-jbyteArray JNI_OnLoad_AesEncrypt(JNIEnv *env, jobject instance, jbyteArray data, jbyteArray key, jboolean useBase64);
-
 jstring JNI_OnLoad_Md5(JNIEnv *env, jobject instance, jbyteArray jstr);
 
 jstring JNI_OnLoad_HmacSha265(JNIEnv *env, jobject instance, jbyteArray data, jbyteArray key);
+
+jbyteArray JNI_OnLoad_AesEcbDecrypt(JNIEnv *env, jobject instance, jbyteArray key, jbyteArray data, jboolean useBase64);
+
+jbyteArray JNI_OnLoad_AesEcbEncrypt(JNIEnv *env, jobject instance, jbyteArray key, jbyteArray data, jboolean useBase64);
+
+jbyteArray JNI_OnLoad_AesCbcDecrypt(JNIEnv *env, jobject instance, jbyteArray key, jbyteArray iv, jbyteArray data, jboolean useBase64);
+
+jbyteArray JNI_OnLoad_AesCbcEncrypt(JNIEnv *env, jobject instance, jbyteArray key, jbyteArray iv, jbyteArray data, jboolean useBase64);
 
 #endif

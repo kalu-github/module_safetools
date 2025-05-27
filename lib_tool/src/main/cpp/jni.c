@@ -7,7 +7,9 @@
 #include "hmac_sha265_util.h"
 #include "common_util.h"
 
-JNIEXPORT JNICALL jint JNI_OnLoad(JavaVM *vm, void *reserved) {
+JNIEXPORT JNICALL
+
+jint JNI_OnLoad(JavaVM *vm, void *reserved) {
 
     JNIEnv *env = NULL;
 
@@ -20,8 +22,10 @@ JNIEXPORT JNICALL jint JNI_OnLoad(JavaVM *vm, void *reserved) {
     static JNINativeMethod cipher_methods[] = {
             {"_getFlag1",      "()[B",                     JNI_OnLoad_GetFlag1},
             {"_getFlag2",      "()[B",                     JNI_OnLoad_GetFlag2},
-            {"_aesDecrypt",    "([B[BZ)[B",                JNI_OnLoad_AesDecrypt},
-            {"_aesEncrypt",    "([B[BZ)[B",                JNI_OnLoad_AesEncrypt},
+            {"_aesEcbDecrypt", "([B[BZ)[B",                JNI_OnLoad_AesEcbDecrypt},
+            {"_aesEcbEncrypt", "([B[BZ)[B",                JNI_OnLoad_AesEcbEncrypt},
+            {"_aesCbcDecrypt", "([B[B[BZ)[B",              JNI_OnLoad_AesCbcDecrypt},
+            {"_aesCbcEncrypt", "([B[B[BZ)[B",              JNI_OnLoad_AesCbcEncrypt},
             {"_base64Decrypt", "([B)[B",                   JNI_OnLoad_Base64Decrypt},
             {"_base64Encrypt", "([B)[B",                   JNI_OnLoad_Base64Encrypt},
             {"_md5",           "([B)Ljava/lang/String;",   JNI_OnLoad_Md5},
@@ -46,18 +50,6 @@ JNI_OnLoad_GetFlag2(JNIEnv *env, jobject instance) {
 }
 
 jbyteArray
-JNI_OnLoad_AesDecrypt(JNIEnv *env, jobject instance, jbyteArray data, jbyteArray key,
-                      jboolean useBase64) {
-    return aesDecrypt(env, instance, data, key, useBase64);
-}
-
-jbyteArray
-JNI_OnLoad_AesEncrypt(JNIEnv *env, jobject instance, jbyteArray data, jbyteArray key,
-                      jboolean useBase64) {
-    return aesEncrypt(env, instance, data, key, useBase64);
-}
-
-jbyteArray
 JNI_OnLoad_Base64Decrypt(JNIEnv *env, jobject instance, jbyteArray jstr) {
     return base64Decrypt(env, instance, jstr);
 }
@@ -75,4 +67,28 @@ JNI_OnLoad_Md5(JNIEnv *env, jobject instance, jbyteArray jstr) {
 jstring
 JNI_OnLoad_HmacSha265(JNIEnv *env, jobject instance, jbyteArray data, jbyteArray key) {
     return hmacSha265(env, instance, data, key);
+}
+
+jbyteArray
+JNI_OnLoad_AesEcbDecrypt(JNIEnv *env, jobject instance, jbyteArray key, jbyteArray data,
+                         jboolean useBase64) {
+    return aesEcbDecrypt(env, instance, key, data, useBase64);
+}
+
+jbyteArray
+JNI_OnLoad_AesEcbEncrypt(JNIEnv *env, jobject instance, jbyteArray key, jbyteArray data,
+                         jboolean useBase64) {
+    return aesEcbEncrypt(env, instance, key, data, useBase64);
+}
+
+jbyteArray
+JNI_OnLoad_AesCbcDecrypt(JNIEnv *env, jobject instance, jbyteArray key, jbyteArray iv,
+                         jbyteArray data, jboolean useBase64) {
+    return aesCbcDecrypt(env, instance, key, iv, data, useBase64);
+}
+
+jbyteArray
+JNI_OnLoad_AesCbcEncrypt(JNIEnv *env, jobject instance, jbyteArray key, jbyteArray iv,
+                         jbyteArray data, jboolean useBase64) {
+    return aesCbcEncrypt(env, instance, key, iv, data, useBase64);
 }
