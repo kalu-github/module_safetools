@@ -1,0 +1,80 @@
+plugins {
+    id 'com.android.library'
+}
+
+android {
+
+    namespace 'lib.kalu.tool'
+    compileSdkVersion 30
+    buildToolsVersion "30.0.3"
+
+    defaultConfig {
+
+        minSdkVersion 23
+        targetSdkVersion 30
+        versionCode 1
+        versionName "1.0"
+
+        ndk {
+            abiFilters "armeabi-v7a", "arm64-v8a", "x86", "x86_64"
+        }
+
+        externalNativeBuild {
+            cmake {
+                //  arguments '-DANDROID_STL=gnustl_static'
+                cppFlags "-std=c++14", "-fno-exceptions", "-O2"
+                // cppFlags "-std=c++14", "-frtti -fexceptions", "-O2"
+                // cppFlags "-frtti -fexceptions"
+                abiFilters "armeabi-v7a", "arm64-v8a", "x86", "x86_64"
+            }
+        }
+
+        //添加此行
+        flavorDimensions "default"
+    }
+
+    libraryVariants.all { variant ->
+        variant.outputs.all {
+            def type = new String(buildType.name).toLowerCase()
+            def time = new Date().format("yyyyMMdd", TimeZone.getTimeZone("GMT+08"))
+            outputFileName = "lib_tool_" + type + "_" + time + ".aar"
+        }
+    }
+
+    buildTypes {
+        release {
+            minifyEnabled true
+            consumerProguardFiles("consumer-rules.pro")
+            proguardFiles("proguard-rules.pro", "consumer-rules.pro")
+        }
+        debug {
+        }
+    }
+    compileOptions {
+        sourceCompatibility JavaVersion.VERSION_1_8
+                targetCompatibility JavaVersion.VERSION_1_8
+    }
+
+    externalNativeBuild {
+        cmake {
+            path "src/main/cpp/CMakeLists.txt"
+        }
+    }
+
+    compileOptions {
+        sourceCompatibility JavaVersion.VERSION_1_8
+                targetCompatibility JavaVersion.VERSION_1_8
+    }
+
+    lintOptions {
+        checkReleaseBuilds false
+        abortOnError false
+    }
+
+    sourceSets.main {
+        jni.srcDirs = []
+    }
+}
+
+dependencies {
+}

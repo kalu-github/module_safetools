@@ -1,4 +1,6 @@
 //include ':app'
 include ':lib_tool'
+//include ':app'
+include ':mylibrary-openssl'
 //include ':lib_safetools_jni'
 //include ':lib_safetools_java'

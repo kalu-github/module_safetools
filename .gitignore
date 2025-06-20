@@ -8,3 +8,5 @@
 .idea
 /lib_tool/.cxx/
 /lib_tool/build/
+/mylibrary-openssl/.cxx/
+/mylibrary-openssl/build/
