@@ -70,10 +70,6 @@ android {
         checkReleaseBuilds false
         abortOnError false
     }
-
-    sourceSets.main {
-        jni.srcDirs = []
-    }
 }
 
 dependencies {

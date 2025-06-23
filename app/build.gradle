@@ -2,14 +2,14 @@ apply plugin: 'com.android.application'
 
 android {
 
-    namespace 'lib.kalu.tool'
-    compileSdkVersion 30
-    buildToolsVersion "30.0.3"
+    namespace "com.kalu.opensslkit"
+    compileSdkVersion 34
+    buildToolsVersion "34.0.0"
 
     defaultConfig {
-
+        applicationId "com.kalu.opensslkit"
         minSdkVersion 23
-        targetSdkVersion 30
+        targetSdkVersion 34
         versionCode 1
         versionName "1.0"
 
@@ -19,25 +19,6 @@ android {
 
         //添加此行
         flavorDimensions "default"
-    }
-
-    signingConfigs {
-        release {
-            storeFile file("debug.jks")
-            storePassword "123456"
-            keyAlias "debug"
-            keyPassword "123456"
-            v1SigningEnabled true
-            v2SigningEnabled true
-        }
-        debug {
-            storeFile file("debug.jks")
-            storePassword "123456"
-            keyAlias "debug"
-            keyPassword "123456"
-            v1SigningEnabled true
-            v2SigningEnabled true
-        }
     }
 
     buildTypes {
@@ -51,32 +32,17 @@ android {
         sourceCompatibility JavaVersion.VERSION_1_8
         targetCompatibility JavaVersion.VERSION_1_8
     }
-
-    lintOptions {
-        checkReleaseBuilds false
-        abortOnError false
-    }
-
-    sourceSets.main {
-        jni.srcDirs = []
-    }
-}
-
-repositories {
-    flatDir {
-        dirs 'libs'
-    }
 }
 
 dependencies {
 
     // opensslKit
-    implementation project(':lib-openssl-kit')
+//    implementation project(':lib-openssl-kit')
     implementation(files("libs/lib_opensslkit_release_20250623.aar"))
 
     // 模块依赖
 //    implementation project(':lib_safetools_jni')
 //    implementation project(':lib_safetools_java')
 
-    implementation('androidx.appcompat:appcompat:1.6.1')
+    implementation('androidx.appcompat:appcompat:1.7.1')
 }

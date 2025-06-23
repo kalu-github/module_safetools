@@ -1,4 +1,4 @@
-package com.kalu.safetools;
+package com.kalu.opensslkit;
 
 import android.os.Bundle;
 import android.text.TextUtils;
@@ -12,7 +12,6 @@ import androidx.appcompat.app.AppCompatActivity;
 import java.nio.charset.StandardCharsets;
 
 import lib.kalu.opensslkit.Box;
-import lib.kalu.tool.R;
 
 public class MainActivity extends AppCompatActivity {
 

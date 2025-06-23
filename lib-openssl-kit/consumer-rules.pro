@@ -1,4 +1,5 @@
--dontwarn lib.kalu.tool
--keep class lib.kalu.opensslkit.**{
-    *;
+-dontwarn lib.kalu.opensslkit
+-keep class lib.kalu.opensslkit.Box{
+    native <methods>;
+    public <methods>;
 }
