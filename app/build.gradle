@@ -1,4 +1,4 @@
-apply plugin: "com_android_application"
+apply plugin: 'com.android.application'
 
 android {
 
@@ -14,21 +14,11 @@ android {
         versionName "1.0"
 
         ndk {
-            abiFilters rootProject.ext.plugin.armeabi_v7a
+            abiFilters "armeabi-v7a", "arm64-v8a", "x86", "x86_64"
         }
 
         //添加此行
         flavorDimensions "default"
-    }
-
-    applicationVariants.all {
-        variant ->
-            variant.outputs.all {
-                variant.productFlavors.each { flavor ->
-                    def date = new Date().format("yyyyMMddHHmmss", TimeZone.getTimeZone("GMT+08"))
-                    outputFileName = "jnitools_" + flavor.name + "_v" + defaultConfig.versionName + "_" + date + ".apk"
-                }
-            }
     }
 
     signingConfigs {
@@ -52,22 +42,8 @@ android {
 
     buildTypes {
         release {
-            useProguard true
-            minifyEnabled true
-            zipAlignEnabled true
-            shrinkResources true
-            multiDexEnabled true
-            signingConfig signingConfigs.release
-            proguardFiles getDefaultProguardFile('proguard-android.txt'), 'proguard-rules.pro'
         }
         debug {
-            useProguard false
-            minifyEnabled false
-            zipAlignEnabled false
-            shrinkResources false
-            multiDexEnabled true
-            signingConfig signingConfigs.debug
-            ext.alwaysUpdateBuildId = false
         }
     }
 
@@ -93,16 +69,14 @@ repositories {
 }
 
 dependencies {
-    implementation fileTree(include: ['*.jar'], dir: 'libs')
+
+    // opensslKit
+    implementation project(':lib-openssl-kit')
+    implementation(files("libs/lib_opensslkit_release_20250623.aar"))
 
     // 模块依赖
-    implementation project(':lib_safetools_jni')
-    implementation project(':lib_safetools_java')
-//    implementation(name: 'lib_jnitools-release', ext: 'aar')
+//    implementation project(':lib_safetools_jni')
+//    implementation project(':lib_safetools_java')
 
-    // 三方依赖
-    implementation rootProject.ext.dependencies.support_activity
-    implementation rootProject.ext.dependencies.support_fragment
-    implementation rootProject.ext.dependencies.support_annotation
-    implementation rootProject.ext.dependencies.support_appcompat
+    implementation('androidx.appcompat:appcompat:1.6.1')
 }

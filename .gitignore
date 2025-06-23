@@ -10,3 +10,5 @@
 /lib_tool/build/
 /mylibrary-openssl/.cxx/
 /mylibrary-openssl/build/
+/lib_openssl-kit/.cxx/
+/lib_openssl-kit/build/

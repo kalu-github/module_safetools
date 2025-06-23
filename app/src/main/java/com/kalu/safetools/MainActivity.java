@@ -9,7 +9,10 @@ import android.widget.Toast;
 import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
 
-import lib.kalu.jnisafetools.SafeTools;
+import java.nio.charset.StandardCharsets;
+
+import lib.kalu.opensslkit.Box;
+import lib.kalu.tool.R;
 
 public class MainActivity extends AppCompatActivity {
 
@@ -18,8 +21,8 @@ public class MainActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
 
-        boolean checkSafe = lib.kalu.safetools.SafeTools.checkSafe();
-        Toast.makeText(getApplicationContext(), String.valueOf(checkSafe), Toast.LENGTH_SHORT).show();
+//        boolean checkSafe = lib.kalu.safetools.SafeTools.checkSafe();
+//        Toast.makeText(getApplicationContext(), String.valueOf(checkSafe), Toast.LENGTH_SHORT).show();
 
 //        new Thread(new Runnable() {
 //
@@ -56,9 +59,9 @@ public class MainActivity extends AppCompatActivity {
                 if (TextUtils.isEmpty(text)) {
                     Toast.makeText(getApplicationContext(), "请输入加密信息", Toast.LENGTH_SHORT).show();
                 } else {
-                    String aesEncode = SafeTools.aesEncodeMult(String.valueOf(text), true, true, true, true);
+                    byte[] bytes = Box.aesEncrypt(String.valueOf(text).getBytes(), true);
                     TextView inputs = findViewById(R.id.main_inputs);
-                    inputs.setText(aesEncode);
+                    inputs.setText(new String(bytes, StandardCharsets.UTF_8));
                 }
             }
         });
@@ -74,9 +77,9 @@ public class MainActivity extends AppCompatActivity {
                 if (TextUtils.isEmpty(text)) {
                     Toast.makeText(getApplicationContext(), "请输入加密信息", Toast.LENGTH_SHORT).show();
                 } else {
-                    String aesDecode = SafeTools.aesDecodeMult(String.valueOf(text), true, true, true, true);
+                    byte[] bytes = Box.aesDecrypt(String.valueOf(text).getBytes(), true);
                     TextView outputs = findViewById(R.id.main_outputs);
-                    outputs.setText(aesDecode);
+                    outputs.setText(new String(bytes, StandardCharsets.UTF_8));
                 }
             }
         });
@@ -97,40 +100,40 @@ public class MainActivity extends AppCompatActivity {
             }
         });
 
-        // 检测模拟器
-        findViewById(R.id.main_emulator).setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-
-                boolean b = SafeTools.checkXposed();
-                Toast.makeText(getApplicationContext(), b + "", Toast.LENGTH_SHORT).show();
-            }
-        });
-
-        // 检测签名信息
-        findViewById(R.id.main_signature1).setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-
-                SafeTools.checkSignature();
-            }
-        });
-
-        // 检测签名信息
-        findViewById(R.id.main_signature2).setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-
-                new Thread(new Runnable() {
-
-                    @Override
-                    public void run() {
-
-                        SafeTools.checkSignature();
-
-                    }
-                }).start();
-            }
-        });
+//        // 检测模拟器
+//        findViewById(R.id.main_emulator).setOnClickListener(new View.OnClickListener() {
+//            @Override
+//            public void onClick(View v) {
+//
+//                boolean b = SafeTools.checkXposed();
+//                Toast.makeText(getApplicationContext(), b + "", Toast.LENGTH_SHORT).show();
+//            }
+//        });
+//
+//        // 检测签名信息
+//        findViewById(R.id.main_signature1).setOnClickListener(new View.OnClickListener() {
+//            @Override
+//            public void onClick(View v) {
+//
+//                SafeTools.checkSignature();
+//            }
+//        });
+//
+//        // 检测签名信息
+//        findViewById(R.id.main_signature2).setOnClickListener(new View.OnClickListener() {
+//            @Override
+//            public void onClick(View v) {
+//
+//                new Thread(new Runnable() {
+//
+//                    @Override
+//                    public void run() {
+//
+//                        SafeTools.checkSignature();
+//
+//                    }
+//                }).start();
+//            }
+//        });
     }
 }
