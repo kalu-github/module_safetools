@@ -5,7 +5,7 @@
 #ifndef COMMON_UTIL_H
 #define COMMON_UTIL_H
 
-#define DEBUG 0 //日志开关，1为开，其它为关
+#define DEBUG 1 //日志开关，1为开，其它为关
 #if(DEBUG == 1)
 #define LOG_TAG "jni_tool"
 #define LOGV(...) __android_log_print(ANDROID_LOG_VERBOSE,LOG_TAG,__VA_ARGS__)

@@ -40,14 +40,13 @@ public class Box {
                 throw new Exception("error: data null");
             }
             if (useJNI) {
-                byte[] result = _aesEcbEncrypt(data, _getFlag1(), true);
+                byte[] result = _aesEcbEncrypt(_getFlag1(), data, true);
                 if (result == null) {
                     throw new Exception("error: _aesDecrypt fail");
                 }
                 return result;
             } else {
-                Box box = new Box();
-                SecretKeySpec secretKey = new SecretKeySpec(box._getFlag1(), "AES");
+                SecretKeySpec secretKey = new SecretKeySpec(_getFlag1(), "AES");
                 Cipher cipher = Cipher.getInstance("AES/ECB/PKCS5Padding");
                 cipher.init(Cipher.ENCRYPT_MODE, secretKey);
                 byte[] encryptedBytes = cipher.doFinal(data);
@@ -69,7 +68,7 @@ public class Box {
                 throw new Exception("error: data null");
             }
             if (useJNI) {
-                byte[] result = _aesEcbDecrypt(data, _getFlag1(), true);
+                byte[] result = _aesEcbDecrypt(_getFlag1(), data, true);
                 if (result == null) {
                     throw new Exception("error: _aesDecrypt fail");
                 }
@@ -79,8 +78,7 @@ public class Box {
                 if (result_base64 == null) {
                     throw new Exception("error: base64Decrypt fail");
                 }
-                Box box = new Box();
-                SecretKeySpec secretKey = new SecretKeySpec(box._getFlag1(), "AES");
+                SecretKeySpec secretKey = new SecretKeySpec(_getFlag1(), "AES");
                 Cipher cipher = Cipher.getInstance("AES/ECB/PKCS5Padding");
                 cipher.init(Cipher.DECRYPT_MODE, secretKey);
                 return cipher.doFinal(result_base64);
@@ -97,8 +95,7 @@ public class Box {
                 throw new Exception("error: data null");
             }
             if (useJNI) {
-                Box box = new Box();
-                byte[] result = box._base64Encrypt(data);
+                byte[] result = _base64Encrypt(data);
                 if (result == null) {
                     throw new Exception("error: _base64Encrypt fail");
                 }
@@ -118,8 +115,7 @@ public class Box {
                 throw new Exception("error: data null");
             }
             if (useJNI) {
-                Box box = new Box();
-                byte[] result = box._base64Decrypt(data);
+                byte[] result = _base64Decrypt(data);
                 if (result == null) {
                     throw new Exception("error: _base64Decrypt fail");
                 }
@@ -139,8 +135,7 @@ public class Box {
                 throw new Exception("error: data null");
             }
             if (useJNI) {
-                Box box = new Box();
-                String result = box._md5(data);
+                String result = _md5(data);
                 if (result == null) {
                     throw new Exception("error: _md5Encrypt fail");
                 }
@@ -172,8 +167,7 @@ public class Box {
                 throw new Exception("error: data null");
             }
             if (useJNI) {
-                Box box = new Box();
-                String result = box._hamcSha265(data, key);
+                String result = _hamcSha265(data, key);
                 if (result == null) {
                     throw new Exception("error: _hamcSha265 fail");
                 }

@@ -9,7 +9,7 @@ JNIEXPORT jbyteArray
 JNICALL
 getFlag1(JNIEnv *env, jclass clazz) {
     // 定义密钥字符串
-    const char *key_str = "123456";
+    const char *key_str = "1234123412341234";
     const int key_str_len = strlen(key_str);
 
     // 创建Java字节数组

@@ -37,12 +37,12 @@ android {
 dependencies {
 
     // opensslKit
-//    implementation project(':lib-openssl-kit')
-    implementation(files("libs/lib_opensslkit_release_20250623.aar"))
+    implementation project(':lib-openssl-kit')
+//    implementation(files("libs/lib_opensslkit_release_20250623.aar"))
 
     // 模块依赖
 //    implementation project(':lib_safetools_jni')
 //    implementation project(':lib_safetools_java')
 
-    implementation('androidx.appcompat:appcompat:1.7.1')
+    implementation('androidx.appcompat:appcompat:1.6.1')
 }
