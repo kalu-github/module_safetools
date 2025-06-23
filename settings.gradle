@@ -1,6 +1,5 @@
 include ':app'
 include ':lib-openssl-kit'
-//include ':app'
 //include ':mylibrary-openssl-mini'
 //include ':mylibrary-openssl-full'
 //include ':lib_safetools_jni'
